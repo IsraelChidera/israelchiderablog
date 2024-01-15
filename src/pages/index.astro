@@ -1,17 +1,11 @@
 ---
-import Hero from '../components/Hero.tsx';
-import '../styles/global.css';
+import Hero from "../components/Hero.tsx";
+import "../styles/global.css";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Israel Chidera - Tech, Resources, Business";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body class="bg-primary text-[#94969C]">		
-		<Hero />
-	</body>
-</html>
+<BaseLayout pageTitle={pageTitle}>
+	<Hero />
+</BaseLayout>

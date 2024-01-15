@@ -1,0 +1,28 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbars.astro";
+
+const { pageTitle } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/logo.png" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{pageTitle}</title>
+    </head>
+    <body class="bg-primary text-[#94969C]">
+        <div class="relative">
+            <Navbar />
+            <slot />            
+        </div>
+       
+
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script type="text/javascript">
+            AOS.init();
+        </script>
+    </body>
+</html>

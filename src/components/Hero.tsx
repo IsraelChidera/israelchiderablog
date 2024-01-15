@@ -4,25 +4,7 @@ const Hero = () => {
     return (
         <header className=" hero-img">
             <Container>
-                <nav className='flex justify-between mt-3 items-center'>
-                    <div>
-                        <img className='w-16 ' src="/logo.png" alt="israel chidera" />
-                    </div>
-
-                    <ul className='flex space-x-10'>
-                        <li>
-                            <a href="#" className='hover:text-white hover:opacity-100'> About </a>
-                        </li>
-
-                        <li>
-                            <a href="#" className='hover:text-white hover:opacity-100'> Blog </a>
-                        </li>
-
-                        <li>
-                            <a href="#" className='hover:text-white hover:opacity-100'> Newsletter </a>
-                        </li>
-                    </ul>
-                </nav>
+               
 
                 <section>
 

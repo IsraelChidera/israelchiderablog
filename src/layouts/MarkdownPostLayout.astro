@@ -1,0 +1,41 @@
+---
+const { frontmatter } = Astro.props;
+import Container from "../components/Elements/Container";
+import BaseLayout from "./BaseLayout.astro";
+console.log("post: ");
+---
+
+<BaseLayout pageTitle={frontmatter.title}>
+    <main>
+        <Container>
+            <main class="pt-20">
+                <div>
+                    <div>
+                        <h1
+                            class="text-dark font-semibold text-center text-6xl"
+                        >
+                            {frontmatter.title}
+                        </h1>                       
+                    </div>
+                    <p class="text-sm text-center">
+                        {frontmatter.pubDate.slice(0, 10)}
+                    </p>
+                </div>                
+
+                <div class="mt-2 flex items-center justify-center pb-6">
+                    <img
+                        src={frontmatter.image.url}
+                        style="height:360px; width:720px"
+                        alt={frontmatter.image.alt}
+                    />
+                </div>               
+
+                <div   
+                    class="prose text-white pb-20 lg:prose-xl max-w-none prose-headings:text-tertiary prose-a:text-white"                 
+                >
+                    <slot />
+                </div>                
+            </main>
+        </Container>
+    </main>
+</BaseLayout>
