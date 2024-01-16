@@ -2,7 +2,7 @@ import Container from './Elements/Container';
 
 const Hero = () => {
     return (
-        <header className=" hero-img">
+        <header className="hero-img">
             <Container>
                
 
