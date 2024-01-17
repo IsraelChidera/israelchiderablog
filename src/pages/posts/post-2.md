@@ -7,7 +7,7 @@ author: 'Williams Oharisi'
 image:
     url: '/humility.jpg'
     alt: 'Humility'
-tags: ["astro", "blogging", "learning in public"]
+tags: ["astro", "blogging", "learn"]
 pageTitle: "s"
 ---
 
