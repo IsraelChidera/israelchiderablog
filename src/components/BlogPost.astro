@@ -2,7 +2,6 @@
 import Button from "./Elements/Button";
 const { title, url, img, post } = Astro.props;
 
-// console.log("posts: ", post.rawContent());
 const a: string = post.rawContent();
 ---
 
@@ -15,13 +14,11 @@ const a: string = post.rawContent();
                 class="rounded-md border"
                 alt="{frontmatter.image.alt}"
             />
-            <div class="flex flex-wrap mt-2">
+            <div class="flex flex-wrap mt-2">                
                 {
-                    post.frontmatter.tags?.map((tag: any) => (
-                        <span class="mx-1 my-1 text-xs w-fit h-fit rounded-md bg-dark p-1 text-[#CECFD2]">
-                            {tag}
-                        </span>
-                    ))
+                    <span class="my-1 text-xs w-fit h-fit rounded-md bg-dark py-1 text-[#CECFD2]">
+                        {post.frontmatter.tags}
+                    </span>
                 }
             </div>
         </div>

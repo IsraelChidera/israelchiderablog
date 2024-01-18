@@ -7,7 +7,7 @@ author: 'Astro Learner'
 image:
     url: '/logo.png'
     alt: 'The full Astro logo.'
-tags: ["seo", "blogging"]
+tags: "seo"
 pageTitle: "seo 4th writing"
 ---
 

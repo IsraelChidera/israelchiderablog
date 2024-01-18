@@ -4,9 +4,9 @@ const Navbar = () => {
     return (
         <nav className=' mt-3'>
             <Container className='flex justify-between items-center'>
-                <div>
+                <a href="/">
                     <img className='w-16 ' src="/logo.png" alt="israel chidera" />
-                </div>
+                </a>
 
                 <ul className='flex space-x-10'>
                     <li>
@@ -14,7 +14,7 @@ const Navbar = () => {
                     </li>
 
                     <li>
-                        <a href="#" className='hover:text-white hover:opacity-100'> Blog </a>
+                        <a href="/blog" className='hover:text-white hover:opacity-100'> Blog </a>
                     </li>
 
                     <li>

@@ -7,12 +7,16 @@ const allPosts = await Astro.glob("./posts/*.{md,mdx}");
 
 console.log(allPosts);
 
-
 const tags = [
     ...new Set(allPosts.map((post) => post?.frontmatter?.tags).flat()),
 ];
 
-const pageTitle: string = "Ayuda Content - Blog";
+console.log("tags", tags);
+console.log("tagsss");
+
+const pageTitle: string = "Israel Chidera - Blog";
+
+
 ---
 
 <BaseLayout pageTitle={pageTitle}>
@@ -34,7 +38,7 @@ const pageTitle: string = "Ayuda Content - Blog";
                                 more.
                             </p>
                         </div>
-                    </div>                   
+                    </div>
                 </div>
             </Container>
         </div>
@@ -42,8 +46,12 @@ const pageTitle: string = "Ayuda Content - Blog";
         <Container className="mt-20">
             <div>
                 <div class="flex items-center space-x-4">
-                    <div class="text-white border-b ">
-                        <a> All </a>
+                    <div class="text-white border-b">
+                        <a> All</a>
+                    </div>
+
+                    <div class="text-tertiary cursor-pointer text-sm">
+                        <a> blog</a>
                     </div>
 
                     {
@@ -59,23 +67,45 @@ const pageTitle: string = "Ayuda Content - Blog";
                         ))
                     }
                 </div>
-                
             </div>
 
             <div
                 class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-10"
             >
                 {
-					allPosts?.map((post) => (
-						<BlogPost
-							url={post.url}
-							title={post.frontmatter.title}
-							// img={post.frontmatter.image?.url}
-							tags={post.frontmatter.tags}
-							post={post}
-						/>
-					))
-				}
+                    allPosts?.map((post) => (
+                        <BlogPost
+                            url={post.url}
+                            title={post.frontmatter.title}
+                            img={post.frontmatter.image?.url}
+                            tags={post.frontmatter.tags}
+                            post={post}
+                        />
+                    ))
+                }                
+                {
+                    console.log(
+                        "there too",
+                        allPosts.filter(
+                            (x) => x.frontmatter.tags === "writing",
+                        ),
+                    )
+                }
+                {
+                    allPosts
+                        .filter((x) => x.frontmatter.tags === "writing")
+                        .map((post) => (
+                            <BlogPost
+                                url={post.url}
+                                title={post.frontmatter.title}
+                                img={post.frontmatter.image?.url}
+                                tags={post.frontmatter.tags}
+                                post={post}
+                            />
+                        ))
+                }
+
+             
             </div>
         </Container>
     </section>
