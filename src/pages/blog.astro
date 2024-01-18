@@ -43,31 +43,7 @@ const pageTitle: string = "Israel Chidera - Blog";
             </Container>
         </div>
 
-        <Container className="mt-20">
-            <div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-white border-b">
-                        <a> All</a>
-                    </div>
-
-                    <div class="text-tertiary cursor-pointer text-sm">
-                        <a> blog</a>
-                    </div>
-
-                    {
-                        tags?.map((tag) => (
-                            <div>
-                                <a
-                                    class="w-full block bg-dark text-tertiary py-2 px-2 text-sm text-center"
-                                    href={`/tags/${tag}`}
-                                >
-                                    {tag}
-                                </a>
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
+        <Container className="mt-20">          
 
             <div
                 class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-10"
@@ -107,7 +83,7 @@ const pageTitle: string = "Israel Chidera - Blog";
 
              
             </div>
-            
+
         </Container>
     </section>
 </BaseLayout>
