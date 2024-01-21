@@ -24,3 +24,10 @@ a, a:hover {
     transition-timing-function: cubic-bezier(.4, 0, .2, 1);
     transition-duration: .3s;
 }
+
+iframe {
+    width: 100%;
+    height: 100vh;
+    background: #333344;
+    color: #fff;
+}

@@ -10,7 +10,7 @@ const Navbar = () => {
 
                 <ul className='flex space-x-10'>
                     <li>
-                        <a href="#" className='hover:text-white hover:opacity-100'> About </a>
+                        <a href="/about" className='hover:text-white hover:opacity-100'> About </a>
                     </li>
 
                     <li>
@@ -18,7 +18,7 @@ const Navbar = () => {
                     </li>
 
                     <li>
-                        <a href="#" className='hover:text-white hover:opacity-100'> Newsletter </a>
+                        <a href="/newsletter" className='hover:text-white hover:opacity-100'> Newsletter </a>
                     </li>
                 </ul>
             </Container>

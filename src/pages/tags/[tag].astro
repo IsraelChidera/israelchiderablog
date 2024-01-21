@@ -34,52 +34,55 @@ const tags = [
 ---
 
 <BaseLayout pageTitle={tag}>
-  <div class="text-center w-4/5 mx-auto">
-    <div>
-      <div class="mt-10">
-        <h1 class="text-center font-semibold text-[72px] text-white">
-          Israel Chidera
-        </h1>
-        
-        <div class="w-full flex justify-center items-center ">
-          <div class="flex items-center space-x-4">           
+  <section class="pb-10">
+    <div class="text-center w-4/5 mx-auto">
+      <div>
+        <div class="mt-10">
+          <h1 class="text-center font-semibold text-[72px] text-white">
+            Israel Chidera
+          </h1>
 
-            {
-              tags?.map((tag) => (
-                <div>
-                  <a
-                    class="w-full no-underline hover:underline underline-offset-8 hover:text-white block bg-dark text-tertiary py-2 px-2 text-sm text-center"
-                    href={`/tags/${tag}`}
-                  >
-                    {tag}
-                  </a>
-                </div>
-              ))
-            }
+          <div class="w-full flex justify-center items-center">
+            <div class="flex items-center space-x-4">
+              {
+                tags?.map((tag) => (
+                  <div>
+                    <a
+                      class="w-full no-underline hover:underline underline-offset-8 hover:text-white block bg-dark text-tertiary py-2 px-2 text-sm text-center"
+                      href={`/tags/${tag}`}
+                    >
+                      {tag}
+                    </a>
+                  </div>
+                ))
+              }
+            </div>
           </div>
+
+          <h3 class="mt-10 text-white text-[10px]">CATEGORY</h3>
+          <p class="font-bold bg-tertiary text-primary text-xl uppercase">
+            {tag}
+          </p>
         </div>
-        
-        <h3 class="mt-10 text-white text-[10px]">CATEGORY</h3>
-        <p class="font-bold bg-tertiary text-primary text-xl uppercase">{tag}</p>
       </div>
     </div>
-  </div>
 
-  <Container className="mt-20">
-    <div
-      class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-10"
-    >
-      {
-        posts.map((post: any) => (
-          <BlogPost
-            url={post.url}
-            title={post.frontmatter.title}
-            img={post.frontmatter.image.url}
-            tags={post.frontmatter.tags}
-            post={post}
-          />
-        ))
-      }
-    </div>
-  </Container>
+    <Container className="mt-20">
+      <div
+        class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-10"
+      >
+        {
+          posts.map((post: any) => (
+            <BlogPost
+              url={post.url}
+              title={post.frontmatter.title}
+              img={post.frontmatter.image.url}
+              tags={post.frontmatter.tags}
+              post={post}
+            />
+          ))
+        }
+      </div>
+    </Container>
+  </section>
 </BaseLayout>
