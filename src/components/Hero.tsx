@@ -3,9 +3,7 @@ import Container from './Elements/Container';
 const Hero = () => {
     return (
         <header className="hero-img">
-            <Container>
-               
-
+            <Container>            
                 <section>
 
                     <div className='h-[80vh] flex items-center justify-center'>

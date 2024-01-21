@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Elements/Container";
+const pageTitle: string = "Israel Chidera - About";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+    <Container className="h-[90vh] flex items-center justify-center w-full">
+        <section class="flex items-center justify-center text-center">
+            <div>
+                <div class="flex items-center justify-center">
+                    <img
+                        class="w-20 h-20 rounded-full"
+                        src="/israelchidera.jpg"
+                        alt=""
+                    />
+                </div>
+                <h1 class="text-xl pt-2 hover:text-white transition ease-in ">Hi I'm Israel Chidera</h1>
+
+                <div class="mt-2 mb-5">
+                    <h2 class="hover:text-white transition ease-in text-3xl">I build digital</h2>
+                    <h2 class="hover:text-white transition ease-in text-3xl">products, brands, and experience.</h2>
+
+                    <p class="mt-2 hover:text-white transition ease-in ">
+                        A software developer with experience in building web
+                        applications, businesses and providing solutions
+                    </p>
+                </div>
+                <a
+                    href="https://www.linkedin.com/in/israel-chidera-97bbab89/"
+                    class="bg-tertiary text-primary font-medium cursor-pointer 
+                    px-4 py-3 hover:bg-white"
+                    target="_blank">Connect With Me</a
+                >
+            </div>
+        </section>
+    </Container>
+</BaseLayout>
