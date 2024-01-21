@@ -27,7 +27,7 @@ const pageTitle: string = "Israel Chidera - Blog";
                             <h1 class="text-4xl font-bold text-dark">
                                 News and insights
                             </h1>
-                            <p class="w-1/2 mx-auto">
+                            <p class="md:w-1/2 mx-auto">
                                 Learn more about SEOs, backlinks and content
                                 writing. Discover our lastest product updates,
                                 patnership, announcement, user stories, and
@@ -62,7 +62,7 @@ const pageTitle: string = "Israel Chidera - Blog";
             </h1>
            
             <div
-                class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-x-6 gap-y-10"
+                class="mt-6 grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-12"
             >
                 {
                     allPosts?.map((post) => (
@@ -74,28 +74,7 @@ const pageTitle: string = "Israel Chidera - Blog";
                             post={post}
                         />
                     ))
-                }
-                {
-                    console.log(
-                        "there too",
-                        allPosts.filter(
-                            (x) => x.frontmatter.tags === "writing",
-                        ),
-                    )
-                }
-                {
-                    allPosts
-                        .filter((x) => x.frontmatter.tags === "writing")
-                        .map((post) => (
-                            <BlogPost
-                                url={post.url}
-                                title={post.frontmatter.title}
-                                img={post.frontmatter.image?.url}
-                                tags={post.frontmatter.tags}
-                                post={post}
-                            />
-                        ))
-                }
+                }                              
             </div>
         </Container>
     </section>

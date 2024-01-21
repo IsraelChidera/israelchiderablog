@@ -9,9 +9,8 @@ const a: string = post.rawContent();
     <a href={url} class="block">
         <div>
             <img
-                src={img}
-                style="width:384x; height:240px"
-                class="rounded-md border"
+                src={img}                
+                class="rounded-md border sm:w-[384px] w-full h-[240px]"
                 alt="{frontmatter.image.alt}"
             />
             <div class="flex flex-wrap mt-2">                
