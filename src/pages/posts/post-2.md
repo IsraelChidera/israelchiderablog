@@ -1,28 +1,71 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
-title: '4th blog Post'
+title: 'Deploying your react app to Netlify in seconds'
 pubDate: 2022-07-01
-description: '4th post of your new Astro blog.'
-author: 'Astro Learner'
+description: 'Deploying your react app to Netlify in seconds'
+author: 'Israel Chidera'
 image:
-    url: '/logo.png'
-    alt: 'The full Astro logo.'
-tags: "writing"
-pageTitle: "seo 4th writing"
+    url: '/netlify.png'
+    alt: 'deploy react app to netlify'
+tags: "tech"
+pageTitle: "Deploying your react app to Netlify in seconds"
 ---
 
-# My First Blog Post
+As a budding developer, you might be faced with these situations.
 
-Welcome to my _new blog_ about learning Astro! Here, I will share my learning journey as I build a new website.
+- You need to host a website quickly for an interview.
+- You need to have a live preview of your site, even if it is incomplete. That is, to have a link to your work.
+- The need to deploy your site without pushing codes to GitHub.
 
-## What I've accomplished
+Netlify deployment via drag and drop has to be the fastest way to deploy your front-end application in seconds.
 
-1. **Installing Astro**: First, I created a new Astro project and set up my online accounts.
+LET’S GO 
 
-2. **Making Pages**: I then learned how to make pages by creating new `.astro` files and placing them in the `src/pages/` folder.
+### Installing your React app with create-react-app
+React is a component-based JavaScript library used for building interactive user interfaces. To create a React project with create-react-app, run:
 
-3. **Making Blog Posts**: This is my first blog post! I now have Astro pages and Markdown posts!
+```jsx
+npx create-react-app my-app
+cd my-app
+npm start
+```
 
-## What's next
+or 
 
-I will finish the Astro tutorial, and then keep adding more posts. Watch this space for more to come.
+```jsx
+yarn create react-app my-app
+cd my-app
+yarn start
+```
+
+### Getting your build folder
+npm/yarn run build creates a build directory with a production build of your app
+
+```jsx
+npm run build
+```
+
+or
+
+```jsx
+yarn run build
+```
+
+### Logging Into your Netlify Account
+You can log in with your GitHub, GitLab, Bitbucket, or email.
+
+![logging in to Netlify](/netlify1.png)
+
+
+### Add a New Site.
+Click on "add a new site" and choose the option of deploying manually. Drag your build folder into the circle.
+
+![adding a new site](/netlify2.png)
+
+Your site has been deployed successfully.
+
+![adding a new site](/netlify3.png)
+
+[optional] Netlify gives you a random name as the domain name. You can change the domain name for accessibility and readability.
+
+THANKS FOR READING

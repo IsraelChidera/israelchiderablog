@@ -1,12 +1,11 @@
 ---
-import Button from "./Elements/Button";
 const { title, url, img, post } = Astro.props;
 
 const a: string = post.rawContent();
 ---
 
 <div class="flex flex-col justify-between">
-    <a href={url} class="block">
+    <a href={url} class="block cursor-pointer">
         <div>
             <img
                 src={img}                
@@ -23,7 +22,7 @@ const a: string = post.rawContent();
         </div>
         <div class="text-white text-[20px] font-bold"><a>{title}</a></div>
         <div class="text-[#94969C] text-sm">
-            {a.slice(1, 100)} . . .
+            {a.slice(3, 100)} . . .
         </div>
     </a>
 </div>
