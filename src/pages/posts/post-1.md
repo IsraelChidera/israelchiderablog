@@ -7,7 +7,7 @@ author: 'Israel Chidera'
 image:
     url: '/logo.png'
     alt: 'Next JS vs Astro JS'
-tags: ["tech"]
+tags: ["tech", "blogging"]
 pageTitle: "Next JS vs Astro.js"
 ---
 
