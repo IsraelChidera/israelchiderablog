@@ -5,7 +5,7 @@ pubDate: 2024-02-04
 description: 'Next JS vs Astro.js: Choosing the right framework for your blog in 2024'
 author: 'Israel Chidera'
 image:
-    url: '/logo.png'
+    url: '/1.png'
     alt: 'Next JS vs Astro JS'
 tags: ["tech", "blogging"]
 pageTitle: "Next JS vs Astro.js"
