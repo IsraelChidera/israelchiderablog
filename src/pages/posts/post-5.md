@@ -11,7 +11,7 @@ tags: "tech"
 pageTitle: "5 Things I Wish I Knew as a Self-Taught Developer"
 ---
 
-> #### There are no best routes to success, the path to being a self-taught developer is no different.
+There are no best routes to success, the path to being a self-taught developer is no different.
 
 Long story short, I was a Microbiology student in my final year who wanted to try out something different to spice up my career. I was introduced to tech a year before and I was confused because I had no guide. So, here are the 5 things I wish I had known as a self-taught developer.
 
