@@ -7,7 +7,7 @@ const Hero = () => {
                 <section>
 
                     <div className='h-[90vh] flex items-center justify-center'>
-                        <div className='text-center w-4/5'>
+                        <div className='text-center md:w-4/5'>
                             <h1 className='font-semibold text-[72px] text-white'>
                                 Israel Chidera
                             </h1>
