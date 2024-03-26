@@ -263,7 +263,35 @@ const Hero = () => {
                                         <ul className='flex flex-wrap items-center md:space-y-0 gap-y-2 md:gap-x-0 gap-x-2 md:space-x-4'>
                                             <li className='group-hover:text-white transition-all ease-linear underline'>Role</li>
                                             <li>Frontend developer</li>
-                                            <li>Designer</li>                                            
+                                            <li>Designer</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='group'>
+                                <div className='rounded-2xl border group-hover:border-white transition-all ease-linear border-tertiary px-6 py-6'>
+                                    <div className='md:grid grid-cols-4 gap-x-4 '>
+                                        <p className='md:text-lg group-hover:text-white transition-all ease-linear'>
+                                            FeedbackShare app
+                                        </p>
+
+                                        <p className='col-span-2 md:text-lg group-hover:text-white transition-all ease-linear'>
+                                            FeedbackShare - A feedback management tool
+                                        </p>
+
+                                        <div className='mt-2 md:mt-0 flex md:justify-end space-x-3 items-center md:space-x-3 '>
+                                            <p className='text-sm text-secondary group-hover:text-white underline'>
+                                                coming soon ↗
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className='mt-2 text-sm'>
+                                        <ul className='flex flex-wrap items-center md:space-y-0 gap-y-2 md:gap-x-0 gap-x-2 md:space-x-4'>
+                                            <li className='group-hover:text-white transition-all ease-linear underline'>Role</li>
+                                            <li>Frontend developer</li>
+                                            <li>Designer</li>
                                         </ul>
                                     </div>
                                 </div>
