@@ -111,9 +111,8 @@ const Hero = () => {
                                 improving the aesthetics, performance and optimization
                                 of digital products without
                                 forgetting about usability.
-                                My passion lies at the intersection of code and clarity.
-                                I'm a front-end developer who obsesses over aesthetics, performance, and SEO.
-                                When I'm not wrangling pixels, you'll find me crafting user-friendly
+                                My passion lies at the intersection of code and clarity.                                
+                                When I'm not creating pixel-perfect designs, you'll find me crafting user-friendly
                                 technical articles and championing the power of open-source
                             </p>
 
