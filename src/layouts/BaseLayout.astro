@@ -13,16 +13,31 @@ const { pageTitle } = Astro.props;
         <link rel="icon" type="image/svg+xml" href="/logo.png" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
+
+        <!-- Google tag (gtag.js) -->
+        <script
+            type="text/partytown"
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-MD8R9SH6CK"
+        ></script>
+        <script type="text/partytown">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-MD8R9SH6CK");
+        </script>
         <title>{pageTitle}</title>
     </head>
     <body class="bg-primary text-[#94969C]">
         <div class="relative">
             <Navbar />
-            <slot />  
-            <Floating />     
+            <slot />
+            <Floating />
             <Footer />
         </div>
-       
 
         <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
         <script type="text/javascript">
