@@ -106,7 +106,7 @@ const Hero = () => {
                         <p className='text-white text-base mb-3'>What I do . . .</p>
                         <div className='md:flex justify-between'>
                             <p className='md:w-2/3 text-[20px] md:text-[34px] hover:text-white transition ease-in '>
-                                Combining aesthetics and usability, I create solid user
+                                Combining aesthetics and functionality, I create solid user
                                 interfaces in an artistic way. I love to spend time
                                 improving the aesthetics, performance and optimization
                                 of digital products without
@@ -121,7 +121,7 @@ const Hero = () => {
                                     Interest
                                 </li>
                                 <li className='hover:text-white transition ease-in'>
-                                    Frontend development
+                                    Software development
                                 </li>
                                 <li className='hover:text-white transition ease-in'>
                                     SEO
