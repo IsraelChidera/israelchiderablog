@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Elements/Container";
+const pageTitle: string = "Israel Chidera - About";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+    <Container className="h-[90vh] flex items-center justify-center w-full">
+        <section class="flex items-center justify-center text-center">
+            <div>                
+                <div class="mt-2 mb-5">
+                    <h2 class="hover:text-white transition ease-in text-8xl">404</h2>                    
+
+                    <div class="flex items-center justify-center">
+                        <p class="mt-2 hover:text-white transition ease-in md:text-[18px] w-3/4">
+                            <span class="text-4xl"> Oops! </span><br/>
+                            It seems like you've wandered off the beaten path. 
+                            The page you're looking for may have gone for a hike in the 
+                            digital wilderness or taken a coffee break. .
+                        </p>
+                    </div>
+                </div>
+                <a
+                    href="/"
+                    class="bg-tertiary text-primary font-medium cursor-pointer 
+                    px-4 py-3 hover:bg-white"
+                >Please return home</a
+                >
+            </div>
+        </section>
+    </Container>
+</BaseLayout>
