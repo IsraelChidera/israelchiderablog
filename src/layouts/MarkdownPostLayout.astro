@@ -20,14 +20,15 @@ import BaseLayout from "./BaseLayout.astro";
                     </a>
                 </div>
                 <div>
-                    <div>
+                    <div class="text-center text-white">
                         <h1
-                            class="text-dark font-semibold text-center text-2xl md:text-5xl"
+                            class="text-white font-semibold text-center text-2xl md:text-5xl"
                         >
                             {frontmatter.title}
-                        </h1>                       
+                        </h1> 
+                        <p class="text-white text-lg">Written by <span class="italic">Israel Chidera</span></p>                      
                     </div>
-                    <p class="text-sm mt-2 text-center">
+                    <p class="text-sm mb-1 text-center">
                         {frontmatter.pubDate.slice(0, 10)}
                     </p>
                 </div>                
