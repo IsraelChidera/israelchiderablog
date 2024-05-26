@@ -1,8 +1,8 @@
 ---
 import "../styles/global.css";
 import Navbar from "../components/Navbars.astro";
-import Footer from "../components/Footer.astro";
 import Floating from "../components/Floating.astro";
+import Footer from "@/components/Footer.astro";
 
 const { pageTitle } = Astro.props;
 ---
@@ -59,11 +59,9 @@ const { pageTitle } = Astro.props;
         </script>
         <title>{pageTitle}</title>
     </head>
-    <body class="bg-primary text-[#94969C]">
-        <div class="relative">
-            <Navbar />
-            <slot />
-            <Floating />
+    <body class="">
+        <div class="bg-primary relative">            
+            <slot />            
             <Footer />
         </div>
 

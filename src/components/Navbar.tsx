@@ -9,7 +9,7 @@ const Navbar = () => {
     }
 
     return (
-        <nav className='relative mt-3'>
+        <nav className='relative h-[10vh] flex justify-center items-center'>
             <Container className='flex justify-between items-center'>
                 <a href="/">
                     <img className='w-16 ' src="/logo.png" alt="israel chidera" />

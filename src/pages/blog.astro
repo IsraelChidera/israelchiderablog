@@ -13,18 +13,18 @@ const pageTitle: string = "Israel Chidera - Blog";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-    <section class="pt-10 pb-20 hero-img">
+    <section class="pt-10 pb-40 hero-img">
         <div>
             <Container>
                 <div class="bg-center">
                     <p class="text-sm text-white text-center mb-2">Blog</p>
 
-                    <div class="flex justify-center items-center">
+                    <div class="flex  justify-center items-center">
                         <div class="xl:w-4/5 md:w-4/5 w-5/6 text-center">
-                            <h1 class="text-4xl font-bold text-dark">
+                            <h1 class="text-4xl font-bold text-[#f8f8ff]">
                                 News and insights
                             </h1>
-                            <p class="md:w-3/4 mx-auto">
+                            <p class="md:w-3/4 mx-auto text-muted-foreground">
                                 Welcome to our blog, where we explore
                                 technology, digital marketing, and productivity.
                                 Dive into articles on technical subjects, SEO,
@@ -39,7 +39,7 @@ const pageTitle: string = "Israel Chidera - Blog";
                                 tags?.map((tag) => (
                                     <div>
                                         <a
-                                            class="w-full no-underline hover:underline underline-offset-8 hover:text-white block bg-dark text-tertiary py-2 px-2 text-sm text-center"
+                                            class="w-full no-underline hover:underline text-muted-foreground underline-offset-8 hover:text-white block bg-dark text-tertiary py-2 px-2 text-sm text-center"
                                             href={`/tags/${tag}`}
                                         >
                                             {tag}

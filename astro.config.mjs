@@ -9,7 +9,9 @@ export default defineConfig({
   site: 'https://israelchidera.netlify.app/',
   integrations: [react(), 
     sitemap(),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
     partytown({
       config: {
         forward: ["dataLayer.push"]
