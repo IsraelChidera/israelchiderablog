@@ -46,7 +46,7 @@ const Footer = () => {
 
                                         <li className='text-[60px] xl:text-[40px] xl:space-x-3 flex'>
                                             <span className='text-base text-white'>04</span>
-                                            <a href="/contact" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>Contact</a>
+                                            <a href="/about" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>Contact</a>
                                         </li>
                                     </ul>
                                 </DrawerHeader>
