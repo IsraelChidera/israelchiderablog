@@ -13,7 +13,7 @@ const FeaturedWritings = () => {
     const writings = [
         {
             datePosted: "April 6, 2024",
-            title: "How to integrate React into an Astro Project",
+            title: "How to add Vercel website with a custom domain to Google search console",
             description: "#astro #react #vercel #google-search-console",
             link: `https://israelchidera.netlify.app/posts/post-6/`
         },
@@ -36,24 +36,26 @@ const FeaturedWritings = () => {
             link: `https://www.freecodecamp.org/news/use-firebase-authentication-in-a-react-app/`
         }
     ]
-    
+
     return (
         <div>
             <h2 className='uppercase text-white mb-2 underline text-lg font-light tracking-wide underline-offset-4'>
                 Featured Writings
             </h2>
 
-            <div className="xl:space-y-6 gap-x-2 gap-y-4 xl:gap-y-0 xl:block grid grid-cols-2">
+            <div className="xl:space-y-6 space-y-3 lg:space-y-0 lg:gap-x-2 lg:gap-y-4 xl:gap-y-0 xl:block lg:grid lg:grid-cols-2">
                 {
                     writings.map(({ datePosted, link, title, description }) => (
-                        <Card className="bg-[#242629] text-white border-none">
-                            <CardHeader>
-                                <CardTitle>
-                                    <a href="link">
-                                        {title}
-                                    </a>
-                                </CardTitle>
-                                <CardContent className="brea">{description}</CardContent>
+                        <Card className="bg-[#242629] group text-white border-none">
+                            <CardHeader className="flex flex-col justify-between">
+                                <div>
+                                    <CardTitle>
+                                        <a href={link} className=" hover:no-underline underline-offset-4 underline">
+                                            {title}
+                                        </a>
+                                    </CardTitle>
+                                    <CardContent className="brea mt-4">{description}</CardContent>
+                                </div>
                                 <CardDescription>{datePosted}</CardDescription>
                             </CardHeader>
                         </Card>
@@ -61,7 +63,16 @@ const FeaturedWritings = () => {
                 }
             </div>
 
+            <div>
+                <p className="space-x-2 text-white mt-2">
+                    <span>Read more here - </span>
+                    <a href="https://www.freecodecamp.org/news/author/israelchidera/" className="underline hover:no-underline">FreeCodeCamp</a>
+                    <a href="https://medium.com/@chiderahub" className="underline hover:no-underline">Medium </a>
+                    {/* <a href="" className="underline hover:no-underline">Hashnode</a> */}
+                    <a href="/blog" className="underline">Blog</a>
+                </p>
 
+            </div>
         </div>
     )
 }
