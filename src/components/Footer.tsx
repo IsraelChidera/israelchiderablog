@@ -29,22 +29,22 @@ const Footer = () => {
                             <DrawerContent className="rounded-t-[48px] bg-[#18181B]">
                                 <DrawerHeader>
                                     <ul className=''>
-                                        <li className='text-[60px] xl:text-[40px] xl:space-x-3 flex'>
+                                        <li className='text-[32px] xl:text-[40px] xl:space-x-3 flex'>
                                             <span className='text-base text-white'>01</span>
                                             <a href="/" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>Projects</a>
                                         </li>
 
-                                        <li className='text-[60px] xl:text-[40px] xl:space-x-3 flex'>
+                                        <li className='text-[32px] xl:text-[40px] xl:space-x-3 flex'>
                                             <span className='text-base text-white'>02</span>
                                             <a href="/about" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>About</a>
                                         </li>
 
-                                        <li className='text-[60px] xl:text-[40px] xl:space-x-3 flex'>
+                                        <li className='text-[32px] xl:text-[40px] xl:space-x-3 flex'>
                                             <span className='text-base text-white'>03</span>
                                             <a href="/blog" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>Blog</a>
                                         </li>
 
-                                        <li className='text-[60px] xl:text-[40px] xl:space-x-3 flex'>
+                                        <li className='text-[32px] xl:text-[40px] xl:space-x-3 flex'>
                                             <span className='text-base text-white'>04</span>
                                             <a href="/about" className='transition ease-linear text-[#94969c] hover:text-[#f8f8ff] '>Contact</a>
                                         </li>

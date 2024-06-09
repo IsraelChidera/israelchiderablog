@@ -1,28 +1,47 @@
 ---
-const { title, url, img, post } = Astro.props;
+const { title, url, img, post, tags } = Astro.props;
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 
 const a: string = post.rawContent();
+console.log("hgh", typeof tags)
 ---
 
-<div class="flex flex-col justify-between">
-    <a href={url} class="block cursor-pointer">
-        <div>
+<div>
+    <a href={url} class="flex justify-between h-full cursor-pointer">
+        <Card className="flex flex-col justify-between bg-[#242629]">
             <img
-                src={img}                
-                class="rounded-md border sm:w-[384px] w-full h-[240px]"
+                src={img}
+                class="rounded-md border sm:w-[384px] w-full h-full"
                 alt="{frontmatter.image.alt}"
             />
-            <div class="flex flex-wrap mt-2">                
-                {
-                    <span class="my-1 text-xs w-fit h-fit rounded-md bg-dark py-1 text-[#CECFD2]">
-                        {post.frontmatter.tags}
-                    </span>
-                }
-            </div>
-        </div>
-        <div class="text-white text-[24px] font-bold">{title}</div>
-        <div class="text-[#94969C] text-base md:text-[17px]">
-            {a.slice(0, 100)} . . .
-        </div>
+            <CardContent className="flex justify-between flex-col ">
+                <div>
+                    <div>
+                        <div class="flex flex-wrap mt-2">
+                            {
+                                (
+                                    <div>
+                                        <span class="my-1 text-xs w-fit h-fit rounded-md bg-dark py-1 text-[#CECFD2]">
+                                            {post.frontmatter.tags}{" "}
+                                        </span>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                    <div class="text-white text-[24px] font-bold">{title}</div>
+                    <div class="text-[#94969C] text-base md:text-[17px]">
+                        {a.slice(0, 100)} . . .
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
     </a>
 </div>

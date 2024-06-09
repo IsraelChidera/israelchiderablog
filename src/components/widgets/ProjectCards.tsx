@@ -16,7 +16,7 @@ const ProjectCards = () => {
             link: "http://feedback-share.vercel.app/"
         },
         {
-            name: "Lumixus Stduio",
+            name: "Lumixus Studio",
             description: `Lumixus studio - A website for a web-design agency.`,
             roles: ["Frontend developer", "SEO manager", "Digital creative"],
             link: "https://lumixus.studio/"
