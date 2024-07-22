@@ -11,11 +11,18 @@ const OssCards = () => {
 
     const projects = [
         {
+            name: "Dev Blog",
+            description: `DevBlog is an open-source blog platform for developers
+            `,
+            roles: ["Frontend developer", "Designer", "Database management"],
+            link: "https://github.com/IsraelChidera/DevBlog"
+        },
+        {
             name: "inFocus app",
             description: `inFocus app app empowers you to supercharge your productivity
             `,
             roles: ["Frontend developer", "Designer", "Database management"],
-            link: "https://github.com/IsraelChidera/focus-app/tree/main/src"
+            link: "https://github.com/IsraelChidera/focus-app"
         },
     ]
     return (
@@ -24,12 +31,16 @@ const OssCards = () => {
                 projects.map(({ name, description, roles, link }) => (
                     <Card key={name} className='bg-[#242629] text-white '>
                         <CardHeader>
-                            <CardTitle>{name}</CardTitle>
+                            <CardTitle>
+                                <a className="cursor-pointer" href={link} target="_blank">
+                                    {name}
+                                </a>
+                            </CardTitle>
                             <CardDescription>{description}</CardDescription>
                         </CardHeader>
                         <CardFooter>
                             <div className='flex text-sm items-center space-x-4'>
-                                <a className="cursor-pointer" href={link}>
+                                <a className="cursor-pointer" href={link} target="_blank">
                                     <svg
                                         className="w-[15px] h-[15x] hover:opacity-70 opacity-100 cursor-pointer"
                                         xmlns="http://www.w3.org/2000/svg"
