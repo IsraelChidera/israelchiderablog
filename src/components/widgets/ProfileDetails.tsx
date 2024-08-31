@@ -2,7 +2,7 @@
 
 const ProfileDetails = () => {
     return (
-        <div className='text-[28px] lg:text-[40px] text-[#646b73] flex flex-wrap'>
+        <div className='text-[24px] lg:text-[40px] text-[#646b73] flex flex-wrap'>
             <span className="word">I'm </span>
             <span className="word"> Israel Chidera </span>
             <div className='flex items-center justify-center word'>
