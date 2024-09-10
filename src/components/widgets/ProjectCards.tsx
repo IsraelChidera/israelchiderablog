@@ -25,7 +25,7 @@ const ProjectCards = () => {
         },
         {
             name: "T40 corporate website",
-            description: `Corporate website for T40 technologies`,
+            description: `Corporate website for T40 technologies. T40 Technologies provides innovative software solutions for transportation companies in Nigeria.`,
             roles: ["Next Js", "Tailwind CSS", "Framer motion"],
             link: "https://myt40.com/",
             img: "/project2.png",
