@@ -14,7 +14,7 @@ const ProjectCards = () => {
             description: `The project involved creating an intuitive online ticket booking system that streamlined the purchase process, integrating real-time seat availability to keep customers informed, and designing custom schedules for easy management and updates (currently used by two transport operators)`,
             roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel", "PayStack API", "Monnify API"],
             link: "https://custom-web.cap.myt40.com/",
-            img: "/intercity.png",
+            img: "/custom-website.png",
         },
         {
             name: "Intercity Web",
