@@ -10,8 +10,15 @@ const ProjectCards = () => {
 
     const projects = [
         {
+            name: "Custom Website Template for Transport Operators",
+            description: `The project involved creating an intuitive online ticket booking system that streamlined the purchase process, integrating real-time seat availability to keep customers informed, and designing custom schedules for easy management and updates (currently used by two transport operators)`,
+            roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel", "PayStack API", "Monnify API"],
+            link: "https://custom-web.cap.myt40.com/",
+            img: "/intercity.png",
+        },
+        {
             name: "Intercity Web",
-            description: `Web app to book cheapest bus tickets online in Nigeria.`,
+            description: `Web app to book Cheap Interstate Bus tickets Online in Nigeria`,
             roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel"],
             link: "https://intercity.ng/",
             img: "/intercity.png",
@@ -40,7 +47,7 @@ const ProjectCards = () => {
         {
             name: "Good Homes",
             description: `A web platform to sell and rent your properties without any commissions.`,
-            roles: ["Next Js", "Tailwind CSS", "Sanity CMS", "Framer motion"],
+            roles: ["Next Js", "Tailwind CSS", "Sanity CMS", "Framer motion", "Paystack API"],
             link: "https://good-homes.vercel.app/",
             img: "/good-homes.png",
         },
@@ -72,6 +79,11 @@ const ProjectCards = () => {
                                     </a>
                                 </CardTitle>
                                 <CardDescription>{description}</CardDescription>
+                                <p className="text-xs">
+                                    {roles.map((role: any) => (
+                                        <span>{role} | </span>
+                                    ))}
+                                </p>
                             </CardHeader>
                             <CardFooter>
                                 <div>
