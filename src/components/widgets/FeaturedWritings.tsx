@@ -1,3 +1,5 @@
+"use client"
+
 import {
     Card,
     CardContent,
@@ -5,7 +7,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "../ui/card"
+} from "../ui/card";
 
 
 const FeaturedWritings = () => {
@@ -46,7 +48,7 @@ const FeaturedWritings = () => {
             <div className="xl:space-y-6 space-y-3 lg:space-y-0 lg:gap-x-2 lg:gap-y-4 xl:gap-y-0 xl:block lg:grid lg:grid-cols-2">
                 {
                     writings.map(({ datePosted, link, title, description }) => (
-                        <Card className="bg-[#242629] group text-white border-none">
+                        <Card key={title} className="bg-[#242629] group text-white border-none">
                             <CardHeader className="flex flex-col justify-between">
                                 <div>
                                     <CardTitle>
@@ -54,7 +56,7 @@ const FeaturedWritings = () => {
                                             {title}
                                         </a>
                                     </CardTitle>
-                                    <CardContent className="brea mt-4">{description}</CardContent>
+                                    <CardContent className="break mt-4">{description}</CardContent>
                                 </div>
                                 <CardDescription>{datePosted}</CardDescription>
                             </CardHeader>

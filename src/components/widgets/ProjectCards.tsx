@@ -38,11 +38,18 @@ const ProjectCards = () => {
             img: "/lumixus.png",
         },
         {
-            name: "FeedbackShare app",
-            description: `FeedbackShare - A feedback management tool`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Supabase", "PostgreSQL"],
-            link: "http://feedback-share.vercel.app/",
-            img: "/feedback-share.png",
+            name: "Graft Web",
+            description: `Landing page for an AI-powered text generator for customized, industry-specific, and multilingual content`,
+            roles: ["Next Js", "Tailwind CSS", "Framer motion"],
+            link: "https://graft.live/",
+            img: "/graft.png",
+        },
+        {
+            name: "RDJ Estates",
+            description: `Landing page for RDJ Estates - Find Your Sustainable Dream Home`,
+            roles: ["Next Js", "Tailwind CSS", "Framer motion"],
+            link: "https://rdjestates.com/",
+            img: "/rdj-estates.png",
         },
         {
             name: "Good Homes",
