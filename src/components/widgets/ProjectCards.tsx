@@ -30,13 +30,13 @@ const ProjectCards = () => {
             link: "https://myt40.com/",
             img: "/project2.png",
         },
-        {
-            name: "Lumixus Studio",
-            description: `Lumixus studio - A website for a web-design agency.`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API"],
-            link: "https://lumixus.studio/",
-            img: "/lumixus.png",
-        },
+        // {
+        //     name: "Lumixus Studio",
+        //     description: `Lumixus studio - A website for a web-design agency.`,
+        //     roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API"],
+        //     link: "https://lumixus.studio/",
+        //     img: "/lumixus.png",
+        // },
         {
             name: "Graft Web",
             description: `Landing page for an AI-powered text generator for customized, industry-specific, and multilingual content`,
