@@ -10,6 +10,14 @@ const ProjectCards = () => {
 
     const projects = [
         {
+            name: "Scris Enterprise",
+            description: "Website for a professional writing services that drive results",
+            roles: ["Next JS", "Tailwind CSS", "Whatsapp Integration", "Framer motion"],
+            link: "http://scris-enterprise.netlify.app",
+            img: "/scris-enterprise.png"
+
+        },
+        {
             name: "Custom Website Template for Transport Operators",
             description: `The project involved creating an intuitive online ticket booking system that streamlined the purchase process, integrating real-time seat availability to keep customers informed, and designing custom schedules for easy management and updates (currently used by two transport operators)`,
             roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel", "PayStack API", "Monnify API"],
@@ -30,13 +38,13 @@ const ProjectCards = () => {
             link: "https://myt40.com/",
             img: "/project2.png",
         },
-        // {
-        //     name: "Lumixus Studio",
-        //     description: `Lumixus studio - A website for a web-design agency.`,
-        //     roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API"],
-        //     link: "https://lumixus.studio/",
-        //     img: "/lumixus.png",
-        // },
+        {
+            name: "Lumixus Studio",
+            description: `Lumixus studio - A website for a web-design agency.`,
+            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API"],
+            link: "https://lumixus-studio.com",
+            img: "/lumixus.png",
+        },
         {
             name: "Graft Web",
             description: `Landing page for an AI-powered text generator for customized, industry-specific, and multilingual content`,
