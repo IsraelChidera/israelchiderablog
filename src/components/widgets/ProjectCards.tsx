@@ -11,7 +11,7 @@ const ProjectCards = () => {
     const projects = [
         {
             name: "Scris Enterprise",
-            description: "Website for a professional writing services that drive results",
+            description: "Website for a writing agency that offers professional writing services to businesses and individuals.",
             roles: ["Next JS", "Tailwind CSS", "Whatsapp Integration", "Framer motion"],
             link: "http://scris-enterprise.netlify.app",
             img: "/scris-enterprise.png"
