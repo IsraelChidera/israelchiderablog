@@ -13,7 +13,7 @@ const ProfileDetails = () => {
                 />
             </div>
             <span className="word text-white">
-                — a Frontend {" "}
+                — a Web {" "}
             </span>
             <span className="word text-white">
                 Engineer 
