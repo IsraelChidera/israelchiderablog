@@ -9,53 +9,61 @@ import {
 const ProjectCards = () => {
 
     const projects = [
-        {
-            name: "Scris Enterprise",
-            description: "Website for a writing agency that offers professional writing services to businesses and individuals.",
-            roles: ["Next JS", "Tailwind CSS", "Whatsapp Integration", "Framer motion"],
-            link: "http://scris-enterprise.netlify.app",
-            img: "/scris-enterprise.png"
+        // {
+        //     name: "Scris Enterprise",
+        //     description: "Website for a writing agency that offers professional writing services to businesses and individuals.",
+        //     roles: ["Next JS", "Tailwind CSS", "Whatsapp Integration", "Framer motion"],
+        //     link: "http://scris-enterprise.netlify.app",
+        //     img: "/scris-enterprise.png"
 
-        },
+        // },
+      
         {
             name: "Custom Website Template for Transport Operators",
             description: `The project involved creating an intuitive online ticket booking system that streamlined the purchase process, integrating real-time seat availability to keep customers informed, and designing custom schedules for easy management and updates (currently used by two transport operators)`,
-            roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel", "PayStack API", "Monnify API"],
+            roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel", "PayStack API", "Monnify API", "Technical SEO",  "Web Optimisation", "Web Analytics", "Web Performance"],
             link: "https://custom-web.cap.myt40.com/",
             img: "/custom-website.png",
         },
         {
             name: "Intercity Web",
             description: `Web app to book Cheap Interstate Bus tickets Online in Nigeria`,
-            roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel"],
+            roles: ["Next JS", "Tailwind CSS", "Framer motion", "Context API", "Laravel","Technical SEO",  "Web Optimisation", "Web Analytics", "Web Performance"],
             link: "https://intercity.ng/",
             img: "/intercity.png",
+        },
+          {
+            name: "KSOM UK",
+            description: "Training and Bible education institution of Eternity Network International (ENI)",
+            roles: ["Next JS", "Tailwind CSS", "Whatsapp Integration", "Technical SEO",  "Framer motion", "Web Analytics", "Web Performance"],
+            link: "https://koinoniaschoolofministry.org.uk/",
+            img: ""
         },
         {
             name: "T40 corporate website",
             description: `Corporate website for T40 technologies. T40 Technologies provides innovative software solutions for transportation companies in Nigeria.`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion"],
+            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Technical SEO",  "Web Optimisation", "Web Analytics", "Web Performance"],
             link: "https://myt40.com/",
             img: "/project2.png",
         },
         {
             name: "Lumixus Studio",
             description: `Lumixus studio - A website for a web-design agency.`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API"],
+            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Chat API", "Technical SEO", "Web Analytics", "Web Performance", "Web Optimisation"],
             link: "https://lumixus-studio.com",
             img: "/lumixus.png",
         },
         {
             name: "Graft Web",
             description: `Landing page for an AI-powered text generator for customized, industry-specific, and multilingual content`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion"],
+            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Web Analytics", "Web Performance", "Web Optimisation"],
             link: "https://graft.live/",
             img: "/graft.png",
         },
         {
             name: "RDJ Estates",
             description: `Landing page for RDJ Estates - Find Your Sustainable Dream Home`,
-            roles: ["Next Js", "Tailwind CSS", "Framer motion"],
+            roles: ["Next Js", "Tailwind CSS", "Framer motion", "Web Analytics", "Web Performance", "Web Optimisation"],
             link: "https://rdjestates.com/",
             img: "/rdj-estates.png",
         },
