@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import react from "@astrojs/react";
 import partytown from '@astrojs/partytown';
 import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
@@ -7,8 +6,15 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://israelchidera.netlify.app/',
-  integrations: [react(), 
-    sitemap(),
+  trailingSlash: 'ignore',
+  redirects: {
+    // The About page now lives on the homepage.
+    '/about': '/#about',
+  },
+  integrations: [
+    sitemap({
+      filter: (page) => !page.endsWith('/about/'),
+    }),
     tailwind({
       applyBaseStyles: false,
     }),
@@ -18,4 +24,4 @@ export default defineConfig({
       }
     })
   ]
-}); 
+});

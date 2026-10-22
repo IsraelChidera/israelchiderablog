@@ -1,78 +1,168 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    font-family: "Inter", sans-serif;    
-    scroll-margin-top: 70px;
+/* Design tokens: RGB channels so Tailwind can apply opacity (bg-fg/5, etc.). */
+:root {
+    --bg: 246 245 241;
+    --surface: 255 255 255;
+    --surface-2: 238 236 230;
+    --fg: 23 24 26;
+    --muted: 85 88 95;
+    --line: 224 221 213;
+    --accent: 43 74 203;
+    --accent-fg: 255 255 255;
+    --ok: 22 120 72;
+    --warn: 150 92 8;
+    color-scheme: light;
 }
 
-@layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 240 10% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 240 10% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 240 10% 3.9%;
-        --primary: 240 5.9% 10%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 240 4.8% 95.9%;
-        --secondary-foreground: 240 5.9% 10%;
-        --muted: 240 4.8% 95.9%;
-        --muted-foreground: 240 3.8% 46.1%;
-        --accent: 240 4.8% 95.9%;
-        --accent-foreground: 240 5.9% 10%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 5.9% 90%;
-        --input: 240 5.9% 90%;
-        --ring: 240 5.9% 10%;
-        --radius: 0.75rem;
-    }
-
-    .dark {
-        --background: 240 10% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 240 10% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 240 10% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 0 0% 98%;
-        --primary-foreground: 240 5.9% 10%;
-        --secondary: 240 3.7% 15.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
-        --accent: 240 3.7% 15.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
-        --ring: 240 4.9% 83.9%;
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: 17 18 20;
+        --surface: 24 25 28;
+        --surface-2: 32 34 38;
+        --fg: 236 236 232;
+        --muted: 160 163 171;
+        --line: 44 46 51;
+        --accent: 143 165 255;
+        --accent-fg: 17 18 20;
+        --ok: 92 196 140;
+        --warn: 230 170 80;
+        color-scheme: dark;
     }
 }
 
-
+:root[data-theme="dark"] {
+    --bg: 17 18 20;
+    --surface: 24 25 28;
+    --surface-2: 32 34 38;
+    --fg: 236 236 232;
+    --muted: 160 163 171;
+    --line: 44 46 51;
+    --accent: 143 165 255;
+    --accent-fg: 17 18 20;
+    --ok: 92 196 140;
+    --warn: 230 170 80;
+    color-scheme: dark;
+}
 
 @layer base {
-    * {
-        @apply border-border;
+    html {
+        -webkit-text-size-adjust: 100%;
+        text-rendering: optimizeLegibility;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-bg text-fg font-sans antialiased;
+        font-feature-settings: "ss01", "cv11";
+    }
+
+    [id] {
+        scroll-margin-top: 5.5rem;
+    }
+
+    ::selection {
+        background: rgb(var(--accent) / 0.2);
+    }
+
+    :focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+
+    h1, h2, h3 {
+        text-wrap: balance;
+    }
+
+    p {
+        text-wrap: pretty;
     }
 }
 
-.word {
-    margin-inline-end: .2em;
+@layer components {
+    .page {
+        @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-8;
+    }
+
+    .eyebrow {
+        @apply font-mono text-xs uppercase tracking-[0.12em] text-muted;
+    }
+
+    .btn {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition-colors duration-150;
+    }
+
+    .btn-primary {
+        @apply btn bg-fg text-bg hover:bg-fg/85;
+    }
+
+    .btn-secondary {
+        @apply btn border border-line bg-surface text-fg hover:border-fg/40;
+    }
+
+    .link {
+        @apply underline decoration-line decoration-1 underline-offset-4 transition-colors hover:decoration-fg;
+    }
+
+    .chip {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wider text-muted;
+    }
+
+    .card {
+        @apply rounded-2xl border border-line bg-surface;
+    }
+
+    /* Long-form posts: map the typography plugin onto the theme tokens. */
+    .prose-theme {
+        --tw-prose-body: rgb(var(--fg) / 0.88);
+        --tw-prose-headings: rgb(var(--fg));
+        --tw-prose-links: rgb(var(--accent));
+        --tw-prose-bold: rgb(var(--fg));
+        --tw-prose-counters: rgb(var(--muted));
+        --tw-prose-bullets: rgb(var(--muted));
+        --tw-prose-hr: rgb(var(--line));
+        --tw-prose-quotes: rgb(var(--fg));
+        --tw-prose-quote-borders: rgb(var(--line));
+        --tw-prose-captions: rgb(var(--muted));
+        --tw-prose-code: rgb(var(--fg));
+        --tw-prose-pre-code: rgb(var(--fg));
+        --tw-prose-pre-bg: rgb(var(--surface-2));
+        --tw-prose-th-borders: rgb(var(--line));
+        --tw-prose-td-borders: rgb(var(--line));
+    }
 }
 
+@layer utilities {
+    /* Icon swaps for the theme toggle and mobile menu button. */
+    [data-theme="dark"] .dark-hidden,
+    :root:not([data-theme="dark"]) .light-hidden,
+    [aria-expanded="true"] .menu-open-hidden,
+    [aria-expanded="false"] .menu-closed-hidden {
+        display: none;
+    }
+
+    .fade-in {
+        animation: fade-in 0.5s ease-out both;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(6px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .fade-in {
+            animation: none;
+        }
+    }
+}

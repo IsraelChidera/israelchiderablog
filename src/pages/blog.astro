@@ -1,78 +1,32 @@
 ---
-import "../styles/global.css";
-import Container from "../components/Elements/Container";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BlogPost from "../components/BlogPost.astro";
-const allPosts = await Astro.glob("./posts/*.{md,mdx}");
+import TagList from "../components/TagList.astro";
+import Icon from "../components/Icon.astro";
+import { links } from "../data/site";
+import type { MarkdownInstance } from "astro";
+import { sortByDate, tagsOf, type PostFrontmatter } from "../lib/posts";
 
-const tags = [
-    ...new Set(allPosts.map((post) => post?.frontmatter?.tags).flat()),
-];
-
-const pageTitle: string = "Israel Chidera - Blog";
+const allPosts = sortByDate(await Astro.glob<MarkdownInstance<PostFrontmatter>>("./posts/*.{md,mdx}"));
+const tags = [...new Set(allPosts.flatMap(tagsOf))];
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-    <section class="pt-10 pb-40 hero-img">
-        <div>
-            <Container>
-                <div class="bg-center">
-                    <p class="text-sm text-white text-center mb-2">Blog</p>
-
-                    <div class="flex  justify-center items-center">
-                        <div class="xl:w-4/5 md:w-4/5 w-5/6 text-center">
-                            <h1 class="text-4xl font-bold text-[#f8f8ff]">
-                                News and insights
-                            </h1>
-                            <p class="md:w-3/4 mx-auto text-muted-foreground">
-                                Welcome to our blog, where we explore
-                                technology, digital marketing, and productivity.
-                                Dive into articles on technical subjects, SEO,
-                                CRO, and productivity tips. 
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="w-full mt-4 flex justify-center items-center">
-                        <div class="flex items-center space-x-4">
-                            {
-                                tags?.map((tag) => (
-                                    <div>
-                                        <a
-                                            class="w-full no-underline hover:underline text-muted-foreground underline-offset-8 hover:text-white block bg-dark text-tertiary py-2 px-2 text-sm text-center"
-                                            href={`/tags/${tag}`}
-                                        >
-                                            {tag}
-                                        </a>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
-                </div>
-            </Container>
-        </div>
-
-        <Container className="mt-20">
-            <h1 class="text-center text-2xl text-white text-bold">
-                All Articles
-            </h1>
-
-            <div
-                class="mt-6 grid xl:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-12"
-            >
-                {
-                    allPosts?.map((post) => (
-                        <BlogPost
-                            url={post.url}
-                            title={post.frontmatter.title}
-                            img={post.frontmatter.image?.url}
-                            tags={post.frontmatter.tags}
-                            post={post}
-                        />
-                    ))
-                }
-            </div>
-        </Container>
-    </section>
+<BaseLayout title="Notes" description="Notes and short articles by Israel Chidera Edeh on web development, frameworks and C#.">
+	<section class="page pb-20 pt-14 sm:pb-28 sm:pt-20">
+		<p class="eyebrow">Notes</p>
+		<h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Notes & articles</h1>
+		<p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+			Shorter pieces published on this site. Most of my tutorials are on
+			<a href={links.freecodecamp} class="link text-fg" rel="noopener">freeCodeCamp News</a>.
+		</p>
+		<div class="mt-8"><TagList tags={tags} /></div>
+		<ul class="mt-8 divide-y divide-line border-y border-line">
+			{allPosts.map((post) => <BlogPost post={post} />)}
+		</ul>
+		<p class="mt-8">
+			<a href="/#writing" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg">
+				<Icon name="arrow-left" /> Back to featured writing
+			</a>
+		</p>
+	</section>
 </BaseLayout>

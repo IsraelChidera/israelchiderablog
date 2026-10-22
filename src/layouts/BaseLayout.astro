@@ -1,67 +1,106 @@
 ---
 import "../styles/global.css";
-import Navbar from "../components/Navbars.astro";
-import Floating from "../components/Floating.astro";
-import Footer from "@/components/Footer.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { links, site } from "../data/site";
 
-const { pageTitle } = Astro.props;
+type Props = {
+    title?: string;
+    description?: string;
+    image?: string;
+    type?: "website" | "article";
+    jsonLd?: Record<string, unknown>;
+};
+
+const { title, description = site.description, image = site.ogImage, type = "website", jsonLd } = Astro.props;
+
+const fullTitle = title ? `${title} · ${site.name}` : site.title;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const imageUrl = new URL(image, site.url).href;
+
+const person = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: site.name,
+    jobTitle: site.role,
+    url: site.url,
+    email: `mailto:${site.email}`,
+    address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
+    sameAs: [links.github, links.linkedin, links.freecodecamp],
+};
 ---
 
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/logo.png" />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{fullTitle}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="alternate" type="application/rss+xml" title={`${site.name}: notes`} href="/rss.xml" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
         <meta name="generator" content={Astro.generator} />
-        <meta
-            name="description"
-            content="Israel Chidera | Software engineer"
-        />
-        <meta name="keywords" content="frontend, software, react js, next js" />
-        <link rel="canonical" href="https://israelchidera.netlify.app" />
-        <meta
-            property="og:title"
-            content="Israel Chidera | Software engineer"
-        />
-        <meta
-            property="og:description"
-            content="Web design, digital marketing, web application, website, website design, Israel Chidera, design, mobile, application, software, web application, CRM, ERP, E-commerce, Networking, Management"
+        <meta name="theme-color" content="#F6F5F1" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#111214" media="(prefers-color-scheme: dark)" />
+
+        <meta property="og:type" content={type} />
+        <meta property="og:site_name" content={site.name} />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image:alt" content={`${site.name}: I build software that solves real business problems.`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content={site.twitter} />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageUrl} />
+
+        <script is:inline>
+            // Apply the saved or system theme before first paint to avoid a flash.
+            (function () {
+                var theme;
+                try { theme = localStorage.getItem("theme"); } catch (e) {}
+                if (theme !== "light" && theme !== "dark") {
+                    theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                }
+                document.documentElement.dataset.theme = theme;
+            })();
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&family=Geist+Mono:wght@400..500&display=swap"
         />
 
-        <meta property="og:url" content="https://israelchidera.netlify.app" />
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="en_GB" />
-        <meta property="og:site_name" content="Israel Chidera" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="https://israelchidera.netlify.app" />
-        <meta name="twitter:creator" content="@ChideraEl" />
-        <meta name="twitter:title" content="Israel Chidera" />
-        <meta
-            name="twitter:description"
-            content="Web design, digital marketing, web application, website,website design,Israel Chidera, design, mobile, application, software, web application, CRM, ERP, E-commerce, Networking, Management"
-        />
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd ?? person)} />
 
         <!-- Google tag (gtag.js) -->
-        <script
-            type="text/partytown"
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-MD8R9SH6CK"
-        ></script>
+        <script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-MD8R9SH6CK"></script>
         <script type="text/partytown">
             window.dataLayer = window.dataLayer || [];
             function gtag() {
                 dataLayer.push(arguments);
             }
             gtag("js", new Date());
-
             gtag("config", "G-MD8R9SH6CK");
         </script>
-        <title>{pageTitle}</title>
     </head>
-    <body class="">
-        <div class="bg-primary relative">
+    <body class="flex min-h-screen flex-col">
+        <a
+            href="#main"
+            class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-fg focus:px-4 focus:py-2 focus:text-bg"
+            >Skip to content</a
+        >
+        <Header />
+        <main id="main" class="flex-1">
             <slot />
-            <Footer />
-        </div>
+        </main>
+        <Footer />
     </body>
 </html>

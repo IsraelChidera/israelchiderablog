@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://israelchidera.netlify.app/sitemap-index.xml

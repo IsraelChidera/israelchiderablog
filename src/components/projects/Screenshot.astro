@@ -1,0 +1,25 @@
+---
+// Real product screenshots (captured from the live sites), framed in a minimal browser bar.
+type Props = { name: string; alt: string; url: string; eager?: boolean };
+const { name, alt, url, eager = false } = Astro.props;
+---
+
+<figure class="overflow-hidden rounded-xl border border-line bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.18)]">
+	<div class="flex items-center gap-1.5 border-b border-line px-3 py-2" aria-hidden="true">
+		<span class="h-2 w-2 rounded-full bg-line"></span>
+		<span class="h-2 w-2 rounded-full bg-line"></span>
+		<span class="h-2 w-2 rounded-full bg-line"></span>
+		<span class="ml-2 truncate font-mono text-[11px] text-muted">{url}</span>
+	</div>
+	<img
+		src={`/projects/${name}-1440.webp`}
+		srcset={`/projects/${name}-720.webp 720w, /projects/${name}-1440.webp 1440w`}
+		sizes="(min-width: 1024px) 640px, 100vw"
+		width="1440"
+		height="900"
+		alt={alt}
+		loading={eager ? "eager" : "lazy"}
+		decoding="async"
+		class="block h-auto w-full"
+	/>
+</figure>

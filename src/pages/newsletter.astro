@@ -1,12 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const pageTitle: string = "Israel Chidera - Subscribe to my newsletter";
 ---
 
-
-<BaseLayout pageTitle={pageTitle}>
-    <section class="w-full ">
-        <iframe src="https://israelchidera.substack.com/embed"  style="border:1px solid #EEE;" ></iframe>
+<BaseLayout title="Newsletter" description="Subscribe to Israel Chidera Edeh's newsletter on Substack.">
+    <section class="page max-w-2xl pb-20 pt-14 sm:pt-20">
+        <p class="eyebrow">Newsletter</p>
+        <h1 class="mt-4 text-4xl font-semibold tracking-tight">Subscribe</h1>
+        <p class="mt-3 text-muted">
+            Occasional posts by email, sent through
+            <a class="link text-fg" href="https://israelchidera.substack.com/" rel="noopener">Substack</a>.
+        </p>
+        <iframe
+            src="https://israelchidera.substack.com/embed"
+            title="Newsletter sign-up on Substack"
+            class="mt-8 h-80 w-full rounded-2xl border border-line bg-white"
+            loading="lazy"></iframe>
     </section>
 </BaseLayout>

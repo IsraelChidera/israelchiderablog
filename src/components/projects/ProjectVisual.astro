@@ -1,0 +1,20 @@
+---
+import type { Project } from "../../data/projects";
+import Screenshot from "./Screenshot.astro";
+import GatewayDiagram from "../diagrams/GatewayDiagram.astro";
+import PayrollDiagram from "../diagrams/PayrollDiagram.astro";
+
+type Props = { project: Project; compact?: boolean; eager?: boolean };
+const { project, compact = false, eager = false } = Astro.props;
+const { visual } = project;
+---
+
+{
+	visual.type === "screenshot" ? (
+		<Screenshot name={visual.name} alt={visual.alt} url={visual.url} eager={eager} />
+	) : (
+		<div class="rounded-xl border border-line bg-surface-2/60 p-4 sm:p-5">
+			{visual.name === "gateway" ? <GatewayDiagram compact={compact} /> : <PayrollDiagram />}
+		</div>
+	)
+}

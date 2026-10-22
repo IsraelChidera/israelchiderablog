@@ -1,7 +1,18 @@
 ---
-import Footers from "./Footer.tsx";
+import { links, site } from "../data/site";
+
+const year = new Date().getFullYear();
 ---
 
-<div>
-    <Footers client:load />
-</div>
+<footer class="border-t border-line">
+	<div class="page flex flex-col gap-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+		<p>© {year} {site.name}</p>
+		<ul class="flex flex-wrap gap-x-5 gap-y-2">
+			<li><a class="link" href={`mailto:${site.email}`}>Email</a></li>
+			<li><a class="link" href={links.github} rel="me">GitHub</a></li>
+			<li><a class="link" href={links.linkedin} rel="me">LinkedIn</a></li>
+			<li><a class="link" href="/blog">Notes</a></li>
+			<li><a class="link" href="/rss.xml">RSS</a></li>
+		</ul>
+	</div>
+</footer>

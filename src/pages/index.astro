@@ -1,13 +1,291 @@
 ---
-
-import "../styles/global.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "@/components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ProjectFeature from "../components/projects/ProjectFeature.astro";
+import { links, site } from "../data/site";
+import { moreWork, projects } from "../data/projects";
+import { certifications, developing, education, experience, skills, writing } from "../data/profile";
 
-const pageTitle = "Israel Chidera - Tech, Resources, Business";
+const [lead, ...rest] = projects;
+const wide = [lead, ...rest.slice(0, 2)];
+const paired = rest.slice(2);
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<Hero />
-</BaseLayout>
+<BaseLayout>
+	<!-- Hero -->
+	<section class="page fade-in pb-16 pt-14 sm:pb-24 sm:pt-24" aria-labelledby="hero-title">
+		<p class="eyebrow">{site.role} · {site.focus}</p>
+		<h1 id="hero-title" class="mt-5 max-w-4xl text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
+			I build software that solves real business problems.
+		</h1>
+		<p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
+			I'm Israel, a software engineer working across frontend, backend and AI integration. I build web applications and business
+			systems that turn complex workflows into reliable products, most recently enterprise payroll software at Deloitte.
+		</p>
 
+		<div class="mt-8 flex flex-wrap items-center gap-3">
+			<a href="#work" class="btn-primary">View selected work <Icon name="arrow-down" /></a>
+			<a href="#contact" class="btn-secondary">Get in touch</a>
+			<a href={site.resume} class="inline-flex min-h-11 items-center gap-1.5 px-2 text-sm text-muted hover:text-fg" download>
+				<Icon name="file" /> Résumé (PDF)
+			</a>
+		</div>
+
+		<p class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
+			<span>{site.location}</span>
+			<span class="inline-flex items-center gap-2">
+				<span class="h-2 w-2 rounded-full bg-ok" aria-hidden="true"></span>{site.availability}
+			</span>
+		</p>
+
+		<dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-4">
+			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
+				<dt class="text-sm leading-snug text-muted">Software Engineer, Deloitte & Touche</dt>
+				<dd class="font-mono text-xs uppercase tracking-wider text-accent">Now</dd>
+			</div>
+			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
+				<dt class="text-sm leading-snug text-muted">reduction in payroll processing time on the platform I lead</dt>
+				<dd class="text-3xl font-semibold tracking-tight">35%</dd>
+			</div>
+			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
+				<dt class="text-sm leading-snug text-muted">less manual data entry with OCR automation I built</dt>
+				<dd class="text-3xl font-semibold tracking-tight">60%</dd>
+			</div>
+			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
+				<dt class="text-sm leading-snug text-muted">years building production web apps and business systems</dt>
+				<dd class="text-3xl font-semibold tracking-tight">5+</dd>
+			</div>
+		</dl>
+	</section>
+
+	<!-- Selected work -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="work">
+		<SectionHeading
+			id="work"
+			number="01"
+			label="Projects"
+			title="Selected work"
+			intro="Enterprise software, a product I founded, and personal projects where I take on new kinds of problems. Each one has a short case study."
+		/>
+
+		<div class="space-y-6">
+			{wide.map((project, i) => <ProjectFeature project={project} index={i + 1} />)}
+			<div class="grid gap-6 lg:grid-cols-2">
+				{paired.map((project, i) => <ProjectFeature project={project} index={i + 4} layout="stacked" />)}
+			</div>
+		</div>
+
+		<div class="mt-14">
+			<h3 class="eyebrow">More work</h3>
+			<ul class="mt-4 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
+				{
+					moreWork.map(({ title, context, body, href }) => (
+						<li class="bg-surface p-5">
+							<p class="flex flex-wrap items-baseline gap-x-2">
+								{href ? (
+									<a href={href} class="inline-flex items-center gap-1 font-medium hover:text-accent" rel="noopener">
+										{title}
+										<Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+									</a>
+								) : (
+									<span class="font-medium">{title}</span>
+								)}
+								<span class="text-xs text-muted">{context}</span>
+							</p>
+							<p class="mt-1.5 text-sm leading-relaxed text-muted">{body}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<!-- Experience -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="experience">
+		<SectionHeading
+			id="experience"
+			number="02"
+			label="Experience"
+			title="Where I've worked"
+			intro="Enterprise payroll, transport booking and payments, parking management and vendor management: software that businesses rely on every day."
+		/>
+
+		<ol class="space-y-10">
+			{
+				experience.map(({ company, title, period, location, summary, points, stack }) => (
+					<li class="grid gap-3 lg:grid-cols-12 lg:gap-10">
+						<div class="lg:col-span-3">
+							<p class="font-mono text-xs text-muted">{period}</p>
+							<p class="mt-1 text-xs text-muted">{location}</p>
+						</div>
+						<div class="lg:col-span-9">
+							<h3 class="text-xl font-semibold tracking-tight">
+								{company}
+								<span class="font-normal text-muted"> · {title}</span>
+							</h3>
+							<p class="mt-1 text-muted">{summary}</p>
+							<ul class="mt-4 max-w-3xl space-y-2.5 text-[15px] leading-relaxed">
+								{points.map((point) => (
+									<li class="flex gap-3">
+										<span class="mt-[0.7rem] h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+										{point}
+									</li>
+								))}
+							</ul>
+							{stack && <p class="mt-4 font-mono text-xs text-muted">{stack}</p>}
+						</div>
+					</li>
+				))
+			}
+		</ol>
+		<p class="mt-10 lg:pl-[calc(25%+0.625rem)]">
+			<a href={site.resume} class="inline-flex items-center gap-1.5 text-sm font-medium" download>
+				<Icon name="file" /> Full résumé (PDF)
+			</a>
+		</p>
+	</section>
+
+	<!-- About -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="about">
+		<SectionHeading id="about" number="03" label="About" title="How I think about the work" />
+
+		<div class="grid gap-10 lg:grid-cols-12">
+			<div class="lg:col-span-3">
+				<img
+					src="/israelchidera.jpg"
+					width="750"
+					height="750"
+					alt="Israel Chidera Edeh"
+					loading="lazy"
+					decoding="async"
+					class="h-32 w-32 rounded-2xl object-cover sm:h-40 sm:w-40"
+				/>
+			</div>
+			<div class="max-w-2xl space-y-5 text-[17px] leading-relaxed lg:col-span-9">
+				<p>
+					I'm a software engineer in Lagos. Most of my work has been on systems businesses depend on every day: payroll at
+					Deloitte, ticketing and payments for transport operators, parking management, and vendor management.
+				</p>
+				<p class="text-muted">
+					I started on the frontend and still care a lot about it: fast pages, accessible interfaces, forms that don't get in the
+					way. Over time my work has moved further back, into API contracts, data flow, error handling, and the .NET and Node
+					services an interface depends on.
+				</p>
+				<p class="text-muted">
+					Founding <a class="link text-fg" href="/projects/werunam/">WeRunAm</a> taught me to look at software from the business
+					side, where a confusing checkout or a missing status update costs real trust. Now I'm going deeper into applied AI:
+					building Python services that call LLMs reliably and learning retrieval, alongside a Master of Technology at Miva Open
+					University.
+				</p>
+			</div>
+		</div>
+
+		<div class="mt-16 grid gap-10 lg:grid-cols-12">
+			<h3 class="eyebrow lg:col-span-3">Technical skills</h3>
+			<div class="lg:col-span-9">
+				<dl class="grid gap-x-10 gap-y-6 sm:grid-cols-2">
+					{
+						skills.map(({ group, items }) => (
+							<div>
+								<dt class="text-sm font-medium">{group}</dt>
+								<dd class="mt-1.5 text-[15px] leading-relaxed text-muted">{items.join(", ")}</dd>
+							</div>
+						))
+					}
+				</dl>
+				<div class="mt-8 rounded-2xl border border-dashed border-line p-5">
+					<p class="text-sm font-medium">Actively developing</p>
+					<dl class="mt-3 grid gap-4 text-[15px] sm:grid-cols-2">
+						<div>
+							<dt class="text-xs text-muted">Used in personal projects</dt>
+							<dd class="mt-1 leading-relaxed">{developing.personal.join(", ")}</dd>
+						</div>
+						<div>
+							<dt class="text-xs text-muted">Currently learning</dt>
+							<dd class="mt-1 leading-relaxed">{developing.learning.join(", ")}</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-16 grid gap-10 lg:grid-cols-12">
+			<h3 class="eyebrow lg:col-span-3">Education & certification</h3>
+			<ul class="divide-y divide-line border-y border-line lg:col-span-9">
+				{
+					[...education, ...certifications].map(({ title, org, period, status }) => (
+						<li class="flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+							<p>
+								<span class="font-medium">{title}</span><span class="text-muted">, {org}</span>
+							</p>
+							<p class="flex shrink-0 items-center gap-2 text-sm text-muted">
+								{status && <span class="chip">{status}</span>}
+								{period}
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<!-- Writing -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="writing">
+		<SectionHeading
+			id="writing"
+			number="04"
+			label="Writing"
+			title="Technical writing"
+			intro="I've published 17 tutorials on freeCodeCamp News, mostly about React, Next.js, authentication and C#. A few I'd start with:"
+		/>
+		<ul class="divide-y divide-line border-y border-line lg:ml-[calc(25%+0.625rem)]">
+			{
+				writing.map(({ title, href, topic }) => (
+					<li>
+						<a href={href} class="group flex items-start justify-between gap-6 py-5" rel="noopener">
+							<span>
+								<span class="block font-mono text-xs text-muted">{topic}</span>
+								<span class="mt-1 block text-lg leading-snug tracking-tight group-hover:text-accent">{title}</span>
+							</span>
+							<Icon name="arrow-up-right" class="mt-6 h-4 w-4 shrink-0 text-muted group-hover:text-accent" />
+						</a>
+					</li>
+				))
+			}
+		</ul>
+		<p class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm lg:ml-[calc(25%+0.625rem)]">
+			<a href={links.freecodecamp} class="inline-flex items-center gap-1 font-medium" rel="noopener">
+				All articles on freeCodeCamp <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+			</a>
+			<a href="/blog" class="inline-flex items-center gap-1 text-muted hover:text-fg">
+				Notes on this site <Icon name="arrow-right" class="h-3.5 w-3.5" />
+			</a>
+		</p>
+	</section>
+
+	<!-- Contact -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="contact">
+		<div class="card overflow-hidden p-6 sm:p-10 lg:p-14">
+			<p class="eyebrow"><span class="text-fg">05</span>&nbsp;&nbsp;Contact</p>
+			<h2 id="contact" class="mt-5 max-w-3xl text-3xl font-semibold tracking-tight sm:text-5xl">
+				Let's talk about what you're building.
+			</h2>
+			<p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+				I'm open to software engineering roles, including remote and international teams, and to collaborating on product work.
+				Email is the quickest way to reach me.
+			</p>
+			<a
+				href={`mailto:${site.email}`}
+				class="mt-8 inline-block break-all text-xl font-medium tracking-tight underline decoration-line decoration-2 underline-offset-[6px] hover:decoration-accent sm:text-3xl"
+				>{site.email}</a
+			>
+			<ul class="mt-8 flex flex-wrap gap-3">
+				<li><a href={`mailto:${site.email}`} class="btn-primary"><Icon name="mail" /> Email me</a></li>
+				<li><a href={links.linkedin} class="btn-secondary" rel="me noopener"><Icon name="linkedin" /> LinkedIn</a></li>
+				<li><a href={links.github} class="btn-secondary" rel="me noopener"><Icon name="github" /> GitHub</a></li>
+				<li><a href={site.resume} class="btn-secondary" download><Icon name="file" /> Résumé (PDF)</a></li>
+			</ul>
+		</div>
+	</section>
+</BaseLayout>

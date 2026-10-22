@@ -1,0 +1,85 @@
+---
+// Architecture of AI-Gateway-API as implemented in the repository (app/ folder).
+// `compact` shows the request path and error mapping only.
+import Flow from "./Flow.astro";
+
+type Props = { compact?: boolean };
+const { compact = false } = Astro.props;
+
+const errors = [
+	{ code: "504", label: "Timeout" },
+	{ code: "503", label: "Unavailable" },
+	{ code: "429", label: "Rate limited + Retry-After" },
+	{ code: "502", label: "Anything else" },
+];
+---
+
+<figure class="space-y-4" aria-label="AI Gateway API architecture">
+	<div>
+		<p class="eyebrow mb-2">Request path</p>
+		<Flow
+			steps={[
+				{ label: "POST /chat", detail: "FastAPI · Pydantic" },
+				{ label: "AIService", detail: "times the call" },
+				{ label: "AIProvider", detail: "async chat()" },
+			]}
+		/>
+	</div>
+
+	<div class="grid gap-2 sm:grid-cols-2">
+		<div class="rounded-xl border border-line bg-surface px-3 py-2.5">
+			<p class="text-[13px] font-medium">GeminiProvider</p>
+			<p class="mt-0.5 font-mono text-[11px] leading-relaxed text-muted">
+				timeout per request<br />retry 429 / 500 / 503<br />2^n backoff + jitter
+			</p>
+		</div>
+		<div class="rounded-xl border border-dashed border-line px-3 py-2.5">
+			<p class="text-[13px] font-medium">MockProvider</p>
+			<p class="mt-0.5 font-mono text-[11px] leading-relaxed text-muted">
+				deterministic replies<br />no network, no API key<br />used in tests
+			</p>
+		</div>
+	</div>
+
+	<div>
+		<p class="eyebrow mb-2">Typed errors → HTTP</p>
+		<ul class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+			{
+				errors.map(({ code, label }) => (
+					<li class="rounded-xl border border-line bg-surface px-3 py-2">
+						<p class="font-mono text-sm font-medium text-accent">{code}</p>
+						<p class="text-[11px] leading-snug text-muted">{label}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	{
+		!compact && (
+			<>
+				<div>
+					<p class="eyebrow mb-2">Response</p>
+					<pre class="overflow-x-auto rounded-xl border border-line bg-surface px-3 py-2.5 font-mono text-[12px] leading-relaxed"><code>{`{ "answer": "…", "model": "…",
+  "usage": { "input_tokens": …, "output_tokens": … },
+  "latency": … }`}</code></pre>
+				</div>
+				<div>
+					<p class="eyebrow mb-2">Retrieval prototype · not yet exposed by the API</p>
+					<Flow
+						steps={[
+							{ label: "Chunk text", detail: "overlapping windows", muted: true },
+							{ label: "Embed", detail: "gemini-embedding-001", muted: true },
+							{ label: "Rank", detail: "cosine similarity, top-k", muted: true },
+						]}
+					/>
+				</div>
+			</>
+		)
+	}
+	<figcaption class="sr-only">
+		Requests to POST /chat are validated with Pydantic and passed to an AIService, which times the call to an AIProvider.
+		The Gemini provider applies a timeout and retries 429, 500 and 503 responses with exponential backoff and jitter;
+		a mock provider is used for tests. Provider errors map to 504, 503, 429 or 502 responses.
+	</figcaption>
+</figure>

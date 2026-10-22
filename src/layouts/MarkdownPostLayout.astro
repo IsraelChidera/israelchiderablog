@@ -1,50 +1,50 @@
 ---
-const { frontmatter } = Astro.props;
-
 import BaseLayout from "./BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { formatDate, type PostFrontmatter } from "../lib/posts";
+import { site } from "../data/site";
+
+type Props = { frontmatter: PostFrontmatter };
+const { frontmatter } = Astro.props;
+const date = new Date(frontmatter.pubDate);
 ---
 
-<BaseLayout pageTitle={frontmatter.title}>
-    <main class="flex justify-center items-center">                   
-            <div class="pt-20 pb-20 prose md:prose-lg lg:prose-xl prose-headings:text-white prose-a:text-white">
-                <div class="flex text-white justify-end mb-6">
-                    <a href="/blog" class="flex items-center space-x-2">
-                        <svg class="w-[16px] h-[16px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                            <path fill="#fff" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/>
-                        </svg>
-                        <p>
-                            back
-                        </p>
-                    </a>
-                </div>
-                <div>
-                    <div class="text-center text-white">
-                        <h1
-                            class="text-white font-semibold text-center text-2xl md:text-5xl"
-                        >
-                            {frontmatter.title}
-                        </h1> 
-                        <p class="text-white md:text-lg">Written by <span class="italic">Israel Chidera</span></p>                      
-                    </div>
-                    <p class="text-sm mb-1 text-center">
-                        {frontmatter.pubDate.slice(0, 10)}
-                    </p>
-                </div>                
+<BaseLayout
+    title={frontmatter.title}
+    description={frontmatter.description ?? frontmatter.title}
+    image={frontmatter.image?.url}
+    type="article"
+    jsonLd={{
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: frontmatter.title,
+        datePublished: date.toISOString().slice(0, 10),
+        author: { "@type": "Person", name: site.name, url: site.url },
+    }}
+>
+    <article class="page max-w-3xl pb-20 pt-10 sm:pb-28 sm:pt-14">
+        <a href="/blog" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg">
+            <Icon name="arrow-left" /> All notes
+        </a>
+        <header class="mt-10">
+            <time datetime={date.toISOString().slice(0, 10)} class="font-mono text-xs text-muted">{formatDate(date)}</time>
+            <h1 class="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">{frontmatter.title}</h1>
+            <p class="mt-3 text-sm text-muted">By {site.name}</p>
+        </header>
 
-                <div class="mt-2 flex items-center justify-center pb-6">
-                    <img
-                        src={frontmatter.image.url}
-                        style="height:360px; width:720px"
-                        alt={frontmatter.image.alt}
-                        class="sm:w-full"
-                    />
-                </div>               
+        {
+            frontmatter.image && (
+                <img
+                    src={frontmatter.image.url}
+                    alt={frontmatter.image.alt}
+                    class="mt-10 aspect-[2/1] w-full rounded-2xl border border-line object-cover"
+                    decoding="async"
+                />
+            )
+        }
 
-                <div   
-                    class="prose text-white pb-20 lg:prose-xl max-w-none prose-headings:text-tertiary prose-a:text-white"                 
-                >
-                    <slot />
-                </div>                
-            </div>        
-    </main>
+        <div class="prose prose-theme mt-10 max-w-none sm:prose-lg prose-headings:tracking-tight prose-img:rounded-xl">
+            <slot />
+        </div>
+    </article>
 </BaseLayout>

@@ -1,0 +1,147 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon from "../../components/Icon.astro";
+import Status from "../../components/projects/Status.astro";
+import ProjectVisual from "../../components/projects/ProjectVisual.astro";
+import { projects, type Project } from "../../data/projects";
+
+export function getStaticPaths() {
+	return projects.map((project, i) => ({
+		params: { slug: project.slug },
+		props: { project, next: projects[(i + 1) % projects.length] },
+	}));
+}
+
+type Props = { project: Project; next: Project };
+const { project, next } = Astro.props;
+---
+
+<BaseLayout title={project.title} description={project.summary} type="article">
+	<article class="page pb-20 pt-10 sm:pb-28 sm:pt-14">
+		<a href="/#work" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-fg">
+			<Icon name="arrow-left" /> All projects
+		</a>
+
+		<header class="fade-in mt-10 max-w-3xl">
+			<div class="flex flex-wrap items-center gap-2">
+				<span class="text-sm text-muted">{project.kind}</span>
+				<Status status={project.status} label={project.statusLabel} />
+			</div>
+			<h1 class="mt-4 text-4xl font-semibold tracking-[-0.03em] sm:text-6xl">{project.title}</h1>
+			<p class="mt-5 text-lg leading-relaxed text-muted sm:text-xl">{project.summary}</p>
+			{
+				project.links.length > 0 && (
+					<div class="mt-7 flex flex-wrap gap-3">
+						{project.links.map(({ label, href }, i) => (
+							<a href={href} class={i === 0 ? "btn-primary" : "btn-secondary"} rel="noopener">
+								{label}
+								<Icon name="arrow-up-right" />
+							</a>
+						))}
+					</div>
+				)
+			}
+			{
+				project.note && (
+					<p class="mt-7 flex gap-2.5 rounded-xl border border-line bg-surface-2/60 p-4 text-sm leading-relaxed text-muted">
+						<Icon name="lock" class="mt-0.5 h-4 w-4 shrink-0" />
+						{project.note}
+					</p>
+				)
+			}
+		</header>
+
+		<div class="mt-12">
+			<ProjectVisual project={project} eager />
+		</div>
+
+		<div class="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-10">
+			<aside class="lg:col-span-4">
+				<dl class="space-y-6 lg:sticky lg:top-24">
+					<div>
+						<dt class="eyebrow">My role</dt>
+						<dd class="mt-2 leading-relaxed">{project.role}</dd>
+					</div>
+					<div>
+						<dt class="eyebrow">Stack</dt>
+						<dd class="mt-2">
+							<ul class="flex flex-wrap gap-1.5">
+								{project.stack.map((item) => <li class="rounded-md bg-surface-2 px-2 py-1 font-mono text-xs">{item}</li>)}
+							</ul>
+						</dd>
+					</div>
+					<div>
+						<dt class="eyebrow">Status</dt>
+						<dd class="mt-2">{project.statusLabel}</dd>
+					</div>
+				</dl>
+			</aside>
+
+			<div class="max-w-2xl space-y-14 lg:col-span-8">
+				<section aria-labelledby="problem">
+					<h2 id="problem" class="text-2xl font-semibold tracking-tight">The problem</h2>
+					<div class="mt-4 space-y-4 text-[17px] leading-relaxed text-fg/85">
+						{project.problem.map((paragraph) => <p>{paragraph}</p>)}
+					</div>
+				</section>
+
+				{
+					project.outcomes && (
+						<section aria-labelledby="outcomes">
+							<h2 id="outcomes" class="text-2xl font-semibold tracking-tight">Outcomes</h2>
+							<dl class="mt-5 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+								{project.outcomes.map(({ value, label }) => (
+									<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
+										<dt class="text-sm leading-snug text-muted">{label}</dt>
+										<dd class="text-3xl font-semibold tracking-tight">{value}</dd>
+									</div>
+								))}
+							</dl>
+						</section>
+					)
+				}
+
+				<section aria-labelledby="built">
+					<h2 id="built" class="text-2xl font-semibold tracking-tight">What I built</h2>
+					<dl class="mt-5 divide-y divide-line border-y border-line">
+						{
+							project.highlights.map(({ title, body }) => (
+								<div class="py-5">
+									<dt class="font-medium">{title}</dt>
+									<dd class="mt-1.5 leading-relaxed text-muted">{body}</dd>
+								</div>
+							))
+						}
+					</dl>
+				</section>
+
+				<section aria-labelledby="decisions">
+					<h2 id="decisions" class="text-2xl font-semibold tracking-tight">Technical decisions</h2>
+					<ol class="mt-5 space-y-5">
+						{
+							project.decisions.map(({ title, body }, i) => (
+								<li class="grid grid-cols-[2rem_1fr] gap-x-2">
+									<span class="font-mono text-sm text-accent">{String(i + 1).padStart(2, "0")}</span>
+									<div>
+										<p class="font-medium">{title}</p>
+										<p class="mt-1 leading-relaxed text-muted">{body}</p>
+									</div>
+								</li>
+							))
+						}
+					</ol>
+				</section>
+			</div>
+		</div>
+
+		<nav aria-label="Next project" class="mt-20 border-t border-line pt-8">
+			<a href={`/projects/${next.slug}/`} class="group flex items-center justify-between gap-6">
+				<span>
+					<span class="eyebrow block">Next project</span>
+					<span class="mt-2 block text-2xl font-semibold tracking-tight group-hover:text-accent sm:text-3xl">{next.title}</span>
+				</span>
+				<Icon name="arrow-right" class="h-6 w-6 shrink-0 transition-transform group-hover:translate-x-1" />
+			</a>
+		</nav>
+	</article>
+</BaseLayout>

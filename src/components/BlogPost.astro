@@ -1,47 +1,19 @@
 ---
-const { title, url, img, post, tags } = Astro.props;
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-
-const a: string = post.rawContent();
-
+import { formatDate, tagsOf, type Post } from "../lib/posts";
+type Props = { post: Post };
+const { post } = Astro.props;
+const { title, description, pubDate } = post.frontmatter;
 ---
 
-<div>
-    <a href={url} class="flex justify-between h-full cursor-pointer">
-        <Card className="flex flex-col justify-between bg-[#242629]">
-            <img
-                src={img}
-                class="rounded-md border sm:w-[384px] w-full h-full"
-                alt="{frontmatter.image.alt}"
-            />
-            <CardContent className="flex justify-between flex-col ">
-                <div>
-                    <div>
-                        <div class="flex flex-wrap mt-2">
-                            {
-                                (
-                                    <div>
-                                        <span class="my-1 text-xs w-fit h-fit rounded-md bg-dark py-1 text-[#CECFD2]">
-                                            {post.frontmatter.tags}{" "}
-                                        </span>
-                                    </div>
-                                )
-                            }
-                        </div>
-                    </div>
-                    <div class="text-white text-[24px] font-bold">{title}</div>
-                    <div class="text-[#94969C] text-base md:text-[17px]">
-                        {a.slice(0, 100)} . . .
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
-    </a>
-</div>
+<li>
+	<a href={post.url} class="group grid gap-1 py-5 sm:grid-cols-[8rem_1fr] sm:gap-6">
+		<time datetime={new Date(pubDate).toISOString().slice(0, 10)} class="font-mono text-xs text-muted sm:pt-1.5">
+			{formatDate(pubDate)}
+		</time>
+		<span>
+			<span class="block text-lg font-medium leading-snug tracking-tight group-hover:text-accent">{title}</span>
+			{description && description !== title && <span class="mt-1 block text-sm text-muted">{description}</span>}
+			<span class="mt-2 block font-mono text-[11px] uppercase tracking-wider text-muted">{tagsOf(post).join(" · ")}</span>
+		</span>
+	</a>
+</li>

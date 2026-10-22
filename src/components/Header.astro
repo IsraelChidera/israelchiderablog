@@ -1,0 +1,120 @@
+---
+import Icon from "./Icon.astro";
+import { nav, site } from "../data/site";
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => href === "/" && path === "/";
+---
+
+<header class="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md">
+	<div class="page flex h-16 items-center justify-between gap-4">
+		<a href="/" class="group flex items-center gap-2.5 rounded-md" aria-label={`${site.shortName}, home`}>
+			<span class="grid h-8 w-8 place-items-center rounded-lg bg-fg font-mono text-[13px] font-medium text-bg">IC</span>
+			<span class="text-[15px] font-medium tracking-tight">{site.shortName}</span>
+		</a>
+
+		<nav aria-label="Primary" class="hidden lg:block">
+			<ul class="flex items-center gap-1">
+				{
+					nav.map(({ label, href }) => (
+						<li>
+							<a
+								href={href}
+								aria-current={isCurrent(href) ? "page" : undefined}
+								class="rounded-full px-3 py-2 text-sm text-muted transition-colors hover:text-fg aria-[current=page]:text-fg"
+							>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				data-theme-toggle
+				class="grid h-10 w-10 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+				aria-label="Switch colour theme"
+			>
+				<Icon name="moon" class="h-[18px] w-[18px] dark-hidden" />
+				<Icon name="sun" class="h-[18px] w-[18px] light-hidden" />
+			</button>
+			<a href="/#contact" class="btn-primary hidden !min-h-10 sm:inline-flex">Let's talk</a>
+			<button
+				type="button"
+				class="grid h-10 w-10 place-items-center rounded-full text-fg transition-colors hover:bg-surface-2 lg:hidden"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+				data-menu-toggle
+			>
+				<span class="sr-only">Menu</span>
+				<Icon name="menu" class="h-5 w-5 menu-open-hidden" />
+				<Icon name="close" class="h-5 w-5 menu-closed-hidden" />
+			</button>
+		</div>
+	</div>
+
+	<div id="mobile-menu" class="border-t border-line bg-bg lg:hidden" hidden>
+		<nav aria-label="Mobile" class="page py-4">
+			<ul class="divide-y divide-line">
+				{
+					nav.map(({ label, href }) => (
+						<li>
+							<a href={href} class="flex items-center justify-between py-3.5 text-lg tracking-tight">
+								{label}
+								<Icon name="arrow-right" class="h-4 w-4 text-muted" />
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<div class="mt-4 flex flex-wrap gap-3 pb-2">
+				<a href="/#contact" class="btn-primary">Let's talk</a>
+				<a href={site.resume} class="btn-secondary" download>
+					<Icon name="file" /> Résumé (PDF)
+				</a>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+	const menu = document.getElementById("mobile-menu");
+
+	const setOpen = (open: boolean, restoreFocus = false) => {
+		if (!toggle || !menu) return;
+		toggle.setAttribute("aria-expanded", String(open));
+		menu.hidden = !open;
+		if (open) menu.querySelector<HTMLAnchorElement>("a")?.focus();
+		else if (restoreFocus) toggle.focus();
+	};
+
+	toggle?.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+	menu?.addEventListener("click", (event) => {
+		if ((event.target as HTMLElement).closest("a")) setOpen(false);
+	});
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") setOpen(false, true);
+	});
+	matchMedia("(min-width: 1024px)").addEventListener("change", (event) => {
+		if (event.matches) setOpen(false);
+	});
+
+	const themeButton = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+	const currentTheme = () => document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+	const labelTheme = () =>
+		themeButton?.setAttribute("aria-label", `Switch to ${currentTheme() === "dark" ? "light" : "dark"} theme`);
+
+	labelTheme();
+	themeButton?.addEventListener("click", () => {
+		const next = currentTheme() === "dark" ? "light" : "dark";
+		document.documentElement.dataset.theme = next;
+		try {
+			localStorage.setItem("theme", next);
+		} catch {}
+		labelTheme();
+	});
+</script>

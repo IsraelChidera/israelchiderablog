@@ -1,0 +1,25 @@
+---
+type Props = { tags: string[]; current?: string };
+const { tags, current } = Astro.props;
+---
+
+<nav aria-label="Tags">
+	<ul class="flex flex-wrap gap-2">
+		<li>
+			<a href="/blog" class="chip hover:text-fg" aria-current={current ? undefined : "page"}>All</a>
+		</li>
+		{
+			tags.map((tag) => (
+				<li>
+					<a
+						href={`/tags/${tag}`}
+						class="chip hover:text-fg aria-[current=page]:border-fg aria-[current=page]:text-fg"
+						aria-current={tag === current ? "page" : undefined}
+					>
+						{tag}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

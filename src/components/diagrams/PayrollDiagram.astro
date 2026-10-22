@@ -1,0 +1,20 @@
+---
+// Deliberately abstract: describes the workflow at the level of the CV, not the system's internals.
+import Icon from "../Icon.astro";
+import Flow from "./Flow.astro";
+---
+
+<figure class="space-y-4" aria-label="Simplified payroll document workflow">
+	<Flow
+		steps={[
+			{ label: "Payroll documents" },
+			{ label: "OCR extraction", detail: "Azure Document Intelligence" },
+			{ label: "Extracted data in the app", detail: "replaces manual entry" },
+			{ label: "Payroll processing" },
+		]}
+	/>
+	<figcaption class="flex items-start gap-2 text-xs text-muted">
+		<Icon name="lock" class="mt-px h-3.5 w-3.5 shrink-0" />
+		Simplified illustration of the workflow. Internal system: no screenshots, data or architecture details are shown.
+	</figcaption>
+</figure>
