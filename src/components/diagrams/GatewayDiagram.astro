@@ -1,6 +1,6 @@
 ---
 // Architecture of AI-Gateway-API as implemented in the repository (app/ folder).
-// `compact` shows the request path and error mapping only.
+// `compact` shows the question-answering path and providers only.
 import Flow from "./Flow.astro";
 
 type Props = { compact?: boolean };
@@ -15,71 +15,79 @@ const errors = [
 ---
 
 <figure class="space-y-4" aria-label="AI Gateway API architecture">
+	{
+		!compact && (
+			<div>
+				<p class="eyebrow mb-2">POST /documents</p>
+				<Flow
+					steps={[
+						{ label: "Chunk text", detail: "overlapping windows" },
+						{ label: "Embed chunks", detail: "Gemini embeddings" },
+						{ label: "Store", detail: "vector store" },
+					]}
+				/>
+			</div>
+		)
+	}
+
 	<div>
-		<p class="eyebrow mb-2">Request path</p>
+		<p class="eyebrow mb-2">POST /ask</p>
 		<Flow
 			steps={[
-				{ label: "POST /chat", detail: "FastAPI · Pydantic" },
-				{ label: "AIService", detail: "times the call" },
-				{ label: "AIProvider", detail: "async chat()" },
+				{ label: "Embed question", detail: "query embedding" },
+				{ label: "Rank chunks", detail: "cosine, top-k" },
+				{ label: "Score ≥ threshold?", detail: "grounding check" },
+				{ label: "Answer + sources", detail: "cites [1], [2]" },
 			]}
 		/>
+		<p class="mt-2 rounded-xl border border-dashed border-line px-3 py-2 font-mono text-[11px] leading-snug text-muted">
+			nothing relevant → "not found", model never called
+		</p>
 	</div>
 
 	<div class="grid gap-2 sm:grid-cols-2">
 		<div class="rounded-xl border border-line bg-surface px-3 py-2.5">
 			<p class="text-[13px] font-medium">GeminiProvider</p>
 			<p class="mt-0.5 font-mono text-[11px] leading-relaxed text-muted">
-				timeout per request<br />retry 429 / 500 / 503<br />2^n backoff + jitter
+				chat + embeddings<br />timeout per request<br />retry 429 / 500 / 503, backoff + jitter
 			</p>
 		</div>
 		<div class="rounded-xl border border-dashed border-line px-3 py-2.5">
 			<p class="text-[13px] font-medium">MockProvider</p>
 			<p class="mt-0.5 font-mono text-[11px] leading-relaxed text-muted">
-				deterministic replies<br />no network, no API key<br />used in tests
+				offline, deterministic<br />no API key needed<br />powers the 44 tests
 			</p>
 		</div>
-	</div>
-
-	<div>
-		<p class="eyebrow mb-2">Typed errors → HTTP</p>
-		<ul class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-			{
-				errors.map(({ code, label }) => (
-					<li class="rounded-xl border border-line bg-surface px-3 py-2">
-						<p class="font-mono text-sm font-medium text-accent">{code}</p>
-						<p class="text-[11px] leading-snug text-muted">{label}</p>
-					</li>
-				))
-			}
-		</ul>
 	</div>
 
 	{
 		!compact && (
 			<>
 				<div>
-					<p class="eyebrow mb-2">Response</p>
-					<pre class="overflow-x-auto rounded-xl border border-line bg-surface px-3 py-2.5 font-mono text-[12px] leading-relaxed"><code>{`{ "answer": "…", "model": "…",
-  "usage": { "input_tokens": …, "output_tokens": … },
-  "latency": … }`}</code></pre>
+					<p class="eyebrow mb-2">Typed errors → HTTP</p>
+					<ul class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+						{errors.map(({ code, label }) => (
+							<li class="rounded-xl border border-line bg-surface px-3 py-2">
+								<p class="font-mono text-sm font-medium text-accent">{code}</p>
+								<p class="text-[11px] leading-snug text-muted">{label}</p>
+							</li>
+						))}
+					</ul>
 				</div>
 				<div>
-					<p class="eyebrow mb-2">Retrieval prototype · not yet exposed by the API</p>
-					<Flow
-						steps={[
-							{ label: "Chunk text", detail: "overlapping windows", muted: true },
-							{ label: "Embed", detail: "gemini-embedding-001", muted: true },
-							{ label: "Rank", detail: "cosine similarity, top-k", muted: true },
-						]}
-					/>
+					<p class="eyebrow mb-2">/ask response</p>
+					<pre class="overflow-x-auto rounded-xl border border-line bg-surface px-3 py-2.5 font-mono text-[12px] leading-relaxed"><code>{`{ "answer": "… [1]", "grounded": true,
+  "sources": [{ "doc_id": "…", "chunk_id": "…", "score": …, "preview": "…" }],
+  "model": "…", "usage": { "input_tokens": …, "output_tokens": … },
+  "latency": … }`}</code></pre>
 				</div>
 			</>
 		)
 	}
 	<figcaption class="sr-only">
-		Requests to POST /chat are validated with Pydantic and passed to an AIService, which times the call to an AIProvider.
-		The Gemini provider applies a timeout and retries 429, 500 and 503 responses with exponential backoff and jitter;
-		a mock provider is used for tests. Provider errors map to 504, 503, 429 or 502 responses.
+		Documents sent to POST /documents are chunked, embedded and stored. POST /ask embeds the question, ranks stored chunks by
+		cosine similarity and keeps those above a threshold. If none remain, it answers "not found" without calling the model;
+		otherwise the model answers from the numbered chunks and cites them. Providers retry 429, 500 and 503 responses with
+		exponential backoff and jitter, and errors map to 504, 503, 429 or 502.
 	</figcaption>
 </figure>

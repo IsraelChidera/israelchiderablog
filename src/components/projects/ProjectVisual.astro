@@ -12,6 +12,18 @@ const { visual } = project;
 {
 	visual.type === "screenshot" ? (
 		<Screenshot name={visual.name} alt={visual.alt} url={visual.url} eager={eager} />
+	) : visual.type === "image" ? (
+		<figure class="grid aspect-[3/2] place-items-center overflow-hidden rounded-xl border border-line bg-surface-2/60 p-4 sm:p-6">
+			<img
+				src={visual.src}
+				alt={visual.alt}
+				width={visual.width}
+				height={visual.height}
+				loading={eager ? "eager" : "lazy"}
+				decoding="async"
+				class="max-h-full w-auto max-w-full object-contain"
+			/>
+		</figure>
 	) : (
 		<div class="rounded-xl border border-line bg-surface-2/60 p-4 sm:p-5">
 			{visual.name === "gateway" ? <GatewayDiagram compact={compact} /> : <PayrollDiagram />}

@@ -4,32 +4,30 @@ import Icon from "../components/Icon.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ProjectFeature from "../components/projects/ProjectFeature.astro";
 import { links, site } from "../data/site";
-import { moreWork, projects } from "../data/projects";
-import { certifications, developing, education, experience, skills, writing } from "../data/profile";
+import { featuredProjects, otherWork, sideProjects } from "../data/projects";
+import { certifications, education, experience, skills, writing } from "../data/profile";
 
-const [lead, ...rest] = projects;
-const wide = [lead, ...rest.slice(0, 2)];
-const paired = rest.slice(2);
+// The first two featured projects get a full row; the rest are paired.
+const wide = featuredProjects.slice(0, 2);
+const paired = featuredProjects.slice(2);
 ---
 
 <BaseLayout>
 	<!-- Hero -->
 	<section class="page fade-in pb-16 pt-14 sm:pb-24 sm:pt-24" aria-labelledby="hero-title">
-		<p class="eyebrow">{site.role} · {site.focus}</p>
-		<h1 id="hero-title" class="mt-5 max-w-4xl text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
-			I build software that solves real business problems.
+		<h1 id="hero-title" class="max-w-4xl text-[2.4rem] font-semibold leading-[1.06] tracking-[-0.03em] sm:text-6xl lg:text-[4.25rem]">
+			I'm Israel Chidera Edeh, a software engineer building full-stack products and AI applications.
 		</h1>
 		<p class="mt-6 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-			I'm Israel, a software engineer working across frontend, backend and AI integration. I build web applications and business
-			systems that turn complex workflows into reliable products, most recently enterprise payroll software at Deloitte.
+			I've spent 5+ years shipping production software: payroll at Deloitte, booking and payments for transport operators, and
+			WeRunAm, the logistics platform I founded. I also build AI into products. At Deloitte, my AI document extraction cut manual
+			payroll data entry by 60%, and I build LLM services in Python and FastAPI.
 		</p>
 
 		<div class="mt-8 flex flex-wrap items-center gap-3">
-			<a href="#work" class="btn-primary">View selected work <Icon name="arrow-down" /></a>
-			<a href="#contact" class="btn-secondary">Get in touch</a>
-			<a href={site.resume} class="inline-flex min-h-11 items-center gap-1.5 px-2 text-sm text-muted hover:text-fg" download>
-				<Icon name="file" /> Résumé (PDF)
-			</a>
+			<a href="#work" class="btn-primary">View projects <Icon name="arrow-down" /></a>
+			<a href={site.resume} class="btn-secondary" download><Icon name="file" /> Download CV</a>
+			<a href={links.github} class="btn-secondary" rel="me noopener"><Icon name="github" /> GitHub</a>
 		</div>
 
 		<p class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
@@ -39,17 +37,25 @@ const paired = rest.slice(2);
 			</span>
 		</p>
 
+		<p class="mt-6 flex max-w-3xl flex-wrap items-baseline gap-x-3 gap-y-1 border-l-2 border-accent pl-4 text-[15px] leading-relaxed">
+			<span class="eyebrow text-accent">Current work</span>
+			<span>{site.now.text}</span>
+			<time datetime={site.now.updated} class="font-mono text-xs text-muted">
+				Updated {new Date(site.now.updated).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}
+			</time>
+		</p>
+
 		<dl class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-4">
 			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
 				<dt class="text-sm leading-snug text-muted">Software Engineer, Deloitte & Touche</dt>
-				<dd class="font-mono text-xs uppercase tracking-wider text-accent">Now</dd>
+				<dd class="font-mono text-xs uppercase tracking-wider text-accent">Current role</dd>
 			</div>
 			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
 				<dt class="text-sm leading-snug text-muted">reduction in payroll processing time on the platform I lead</dt>
 				<dd class="text-3xl font-semibold tracking-tight">35%</dd>
 			</div>
 			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
-				<dt class="text-sm leading-snug text-muted">less manual data entry with OCR automation I built</dt>
+				<dt class="text-sm leading-snug text-muted">less manual data entry with AI document extraction I built</dt>
 				<dd class="text-3xl font-semibold tracking-tight">60%</dd>
 			</div>
 			<div class="flex flex-col-reverse justify-end gap-1 bg-surface p-5">
@@ -66,36 +72,35 @@ const paired = rest.slice(2);
 			number="01"
 			label="Projects"
 			title="Selected work"
-			intro="Enterprise software, a product I founded, and personal projects where I take on new kinds of problems. Each one has a short case study."
+			intro="Enterprise software, AI services, and products I've founded and shipped. Each one has a short case study."
 		/>
 
 		<div class="space-y-6">
 			{wide.map((project, i) => <ProjectFeature project={project} index={i + 1} />)}
 			<div class="grid gap-6 lg:grid-cols-2">
-				{paired.map((project, i) => <ProjectFeature project={project} index={i + 4} layout="stacked" />)}
+				{paired.map((project, i) => <ProjectFeature project={project} index={i + wide.length + 1} layout="stacked" />)}
 			</div>
 		</div>
 
 		<div class="mt-14">
-			<h3 class="eyebrow">More work</h3>
+			<h3 class="eyebrow">Side projects & open source</h3>
 			<ul class="mt-4 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2">
 				{
-					moreWork.map(({ title, context, body, href }) => (
-						<li class="bg-surface p-5">
-							<p class="flex flex-wrap items-baseline gap-x-2">
-								{href ? (
-									<a href={href} class="inline-flex items-center gap-1 font-medium hover:text-accent" rel="noopener">
+					sideProjects.map(({ title, context, body, href }) => {
+						const internal = href.startsWith("/");
+						return (
+							<li class="bg-surface p-5 sm:[&:last-child:nth-child(odd)]:col-span-2">
+								<p class="flex flex-wrap items-baseline gap-x-2">
+									<a href={href} class="inline-flex items-center gap-1 font-medium hover:text-accent" rel={internal ? undefined : "noopener"}>
 										{title}
-										<Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+										<Icon name={internal ? "arrow-right" : "arrow-up-right"} class="h-3.5 w-3.5" />
 									</a>
-								) : (
-									<span class="font-medium">{title}</span>
-								)}
-								<span class="text-xs text-muted">{context}</span>
-							</p>
-							<p class="mt-1.5 text-sm leading-relaxed text-muted">{body}</p>
-						</li>
-					))
+									<span class="text-xs text-muted">{context}</span>
+								</p>
+								<p class="mt-1.5 text-sm leading-relaxed text-muted">{body}</p>
+							</li>
+						);
+					})
 				}
 			</ul>
 		</div>
@@ -174,9 +179,9 @@ const paired = rest.slice(2);
 				</p>
 				<p class="text-muted">
 					Founding <a class="link text-fg" href="/projects/werunam/">WeRunAm</a> taught me to look at software from the business
-					side, where a confusing checkout or a missing status update costs real trust. Now I'm going deeper into applied AI:
-					building Python services that call LLMs reliably and learning retrieval, alongside a Master of Technology at Miva Open
-					University.
+					side, where a confusing checkout or a missing status update costs real trust. Alongside product work, I build AI
+					applications: document AI like the extraction I built at Deloitte, and Python services that call LLMs reliably and ground
+					their answers in real documents. I'm also doing a Master of Technology at Miva Open University.
 				</p>
 			</div>
 		</div>
@@ -194,19 +199,6 @@ const paired = rest.slice(2);
 						))
 					}
 				</dl>
-				<div class="mt-8 rounded-2xl border border-dashed border-line p-5">
-					<p class="text-sm font-medium">Actively developing</p>
-					<dl class="mt-3 grid gap-4 text-[15px] sm:grid-cols-2">
-						<div>
-							<dt class="text-xs text-muted">Used in personal projects</dt>
-							<dd class="mt-1 leading-relaxed">{developing.personal.join(", ")}</dd>
-						</div>
-						<div>
-							<dt class="text-xs text-muted">Currently learning</dt>
-							<dd class="mt-1 leading-relaxed">{developing.learning.join(", ")}</dd>
-						</div>
-					</dl>
-				</div>
 			</div>
 		</div>
 
@@ -262,6 +254,35 @@ const paired = rest.slice(2);
 				Notes on this site <Icon name="arrow-right" class="h-3.5 w-3.5" />
 			</a>
 		</p>
+	</section>
+
+	<!-- Other work -->
+	<section class="page pb-20 sm:pb-28" aria-labelledby="other-work">
+		<div class="grid gap-6 border-t border-line pt-6 lg:grid-cols-12 lg:gap-10">
+			<div class="lg:col-span-3">
+				<h2 id="other-work" class="eyebrow">Other work</h2>
+				<p class="mt-2 text-sm text-muted">Websites built for clients.</p>
+			</div>
+			<ul class="divide-y divide-line border-y border-line lg:col-span-9">
+				{
+					otherWork.map(({ title, body, href }) => (
+						<li class="flex flex-col gap-1 py-3.5 sm:flex-row sm:items-baseline sm:gap-6">
+							<p class="shrink-0 sm:w-40">
+								{href ? (
+									<a href={href} class="inline-flex items-center gap-1 font-medium hover:text-accent" rel="noopener">
+										{title}
+										<Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+									</a>
+								) : (
+									<span class="font-medium">{title}</span>
+								)}
+							</p>
+							<p class="text-sm leading-relaxed text-muted">{body}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
 	</section>
 
 	<!-- Contact -->

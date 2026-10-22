@@ -5,11 +5,18 @@ export const site = {
     name: "Israel Chidera Edeh",
     shortName: "Israel Chidera",
     url: "https://israelchidera.netlify.app",
-    title: "Israel Chidera Edeh, Software Engineer",
+    title: "Israel Chidera Edeh | Software Engineer · Full-Stack & AI",
     description:
-        "Software engineer in Lagos, Nigeria, working across full-stack development and AI integration. I build web applications and business systems with TypeScript, React, Next.js, C#/.NET, Node.js and Python.",
+        "Software engineer in Lagos building full-stack products and AI applications with TypeScript, React, Next.js, C#/.NET and Python.",
+    keywords:
+        "software engineer, full-stack, AI applications, React, Next.js, TypeScript, Node.js, ASP.NET, C#, .NET, Python, FastAPI, LLM, RAG, embeddings, document AI, payments, Lagos, Nigeria",
     role: "Software Engineer",
-    focus: "Full-stack development · AI integration",
+    focus: "Full-stack products and AI applications",
+    // Update whenever it changes, and keep the date current.
+    now: {
+        text: "Now building: vector search with pgvector and LLM evaluation. AWS Certified AI Practitioner exam: January 2027.",
+        updated: "2026-10-22",
+    },
     location: "Lagos, Nigeria (WAT, UTC+1)",
     availability: "Open to remote roles",
     email: "israelchidera54@gmail.com",

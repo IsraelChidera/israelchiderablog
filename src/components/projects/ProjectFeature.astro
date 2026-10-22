@@ -14,7 +14,7 @@ const wide = layout === "wide";
 <article
 	class:list={[
 		"card grid gap-6 p-5 sm:p-7",
-		wide && "lg:grid-cols-12 lg:gap-10 lg:p-8",
+		wide ? "lg:grid-cols-12 lg:gap-10 lg:p-8" : "content-start",
 	]}
 	aria-labelledby={`project-${project.slug}`}
 >
@@ -31,7 +31,7 @@ const wide = layout === "wide";
 		<p class="mt-3 leading-relaxed text-muted">{project.summary}</p>
 
 		{
-			project.outcomes ? (
+			project.outcomes && (
 				<dl class="mt-6 grid grid-cols-3 gap-3 border-t border-line pt-5">
 					{project.outcomes.map(({ value, label }) => (
 						<div class="flex flex-col-reverse justify-end">
@@ -40,19 +40,11 @@ const wide = layout === "wide";
 						</div>
 					))}
 				</dl>
-			) : (
-				<ul class="mt-6 space-y-2 border-t border-line pt-5 text-sm">
-					{project.highlights.slice(0, 3).map(({ title }) => (
-						<li class="flex gap-2.5">
-							<span class="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-							{title}
-						</li>
-					))}
-				</ul>
 			)
 		}
 
 		<p class="mt-5 font-mono text-xs leading-relaxed text-muted">{project.stack.join(" · ")}</p>
+		{project.note && <p class="mt-3 text-xs text-muted">{project.note.split(". ")[0]}.</p>}
 
 		<div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 pt-1 lg:mt-auto lg:pt-6">
 			<a href={caseStudy} class="group inline-flex items-center gap-1.5 text-sm font-medium">

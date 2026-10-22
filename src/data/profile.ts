@@ -9,7 +9,7 @@ export const experience = [
         summary: "Enterprise payroll platform for the Tax & GES department.",
         points: [
             "Lead development of the web application for an enterprise payroll platform and maintain it in production. The platform cut payroll processing time by 35%.",
-            "Built OCR document automation with Azure Document Intelligence that reduced manual data entry by 60%.",
+            "Built AI document extraction with Azure Document Intelligence that reads payroll documents and cut manual data entry by 60%.",
             "Integrate Next.js with Node.js/Express and ASP.NET APIs, working with backend engineers on API contracts, data flow and error handling.",
             "Improved load performance by 25% (LCP) and led accessibility work against WCAG 2.1.",
         ],
@@ -67,20 +67,15 @@ export const skills = [
     },
     { group: "Databases", items: ["SQL Server", "MongoDB", "Firebase / Firestore", "Supabase"] },
     {
-        group: "Cloud & AI",
-        items: ["Microsoft Azure", "Azure Document Intelligence", "Google Gemini API", "AWS (S3, IAM)", "Vercel", "Netlify"],
+        group: "AI applications",
+        items: ["Python", "FastAPI", "Pydantic", "LLM APIs (Gemini)", "RAG", "Embeddings", "Document AI (Azure Document Intelligence)"],
     },
+    { group: "Cloud & tooling", items: ["Microsoft Azure", "AWS (S3, IAM)", "Docker", "Vercel", "Netlify", "CI/CD", "Git/GitHub"] },
     {
         group: "Practices",
-        items: ["Jest", "pytest", "CI/CD", "Code review", "API design", "Core Web Vitals", "WCAG 2.1", "Agile/Scrum"],
+        items: ["Jest", "pytest", "Code review", "API design", "Core Web Vitals", "WCAG 2.1", "Agile/Scrum"],
     },
 ];
-
-// Kept separate so personal-project and learning work isn't presented as professional experience.
-export const developing = {
-    personal: ["Python", "FastAPI", "Pydantic", "LLM API integration", "Embeddings"],
-    learning: ["Retrieval-augmented generation (RAG)", "Vector search", "Cloud-based AI systems"],
-};
 
 export const writing = [
     {

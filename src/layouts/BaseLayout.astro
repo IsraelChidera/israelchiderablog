@@ -37,6 +37,7 @@ const person = {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{fullTitle}</title>
         <meta name="description" content={description} />
+        <meta name="keywords" content={site.keywords} />
         <link rel="canonical" href={canonical} />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="alternate" type="application/rss+xml" title={`${site.name}: notes`} href="/rss.xml" />
@@ -52,7 +53,7 @@ const person = {
         <meta property="og:title" content={fullTitle} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={imageUrl} />
-        <meta property="og:image:alt" content={`${site.name}: I build software that solves real business problems.`} />
+        <meta property="og:image:alt" content={`${site.name}: software engineer building full-stack products and AI applications.`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content={site.twitter} />
         <meta name="twitter:title" content={fullTitle} />

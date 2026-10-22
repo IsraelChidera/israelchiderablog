@@ -2,7 +2,7 @@
 // Every claim here was checked against the live product, its repository or the CV.
 // Keep it that way: no metrics or features that can't be verified.
 
-export type ProjectStatus = "live" | "in-progress" | "internal";
+export type ProjectStatus = "live" | "in-progress" | "internal" | "shipped";
 
 export type Project = {
     slug: string;
@@ -10,6 +10,7 @@ export type Project = {
     kind: string;
     status: ProjectStatus;
     statusLabel: string;
+    featured: boolean;
     summary: string;
     problem: string[];
     role: string;
@@ -20,9 +21,14 @@ export type Project = {
     links: { label: string; href: string }[];
     visual:
         | { type: "screenshot"; name: string; alt: string; url: string }
+        | { type: "image"; src: string; alt: string; width: number; height: number }
         | { type: "diagram"; name: "gateway" | "payroll" };
     note?: string;
 };
+
+// Naming Neptune publicly needs your manager's approval. If it isn't given,
+// set this to false: the project then appears under the fallback title below.
+const NEPTUNE_NAME_APPROVED = true;
 
 export const projects: Project[] = [
     {
@@ -31,52 +37,111 @@ export const projects: Project[] = [
         kind: "Personal project",
         status: "in-progress",
         statusLabel: "In progress",
+        featured: true,
         summary:
-            "A Python/FastAPI service that puts LLM chat behind a provider-agnostic interface, with the timeouts, retries and error mapping that external AI APIs need.",
+            "A FastAPI service that puts LLM chat and retrieval-augmented Q&A behind one stable API. It splits documents into chunks, embeds them, and answers questions only from the most relevant passages, citing its sources. When nothing relevant is stored, it says so instead of guessing. Built with retries and exponential backoff, timeouts, typed error handling and a 44-test suite.",
         problem: [
-            "When an application calls an LLM API directly, it becomes tied to one vendor's SDK, error format and failure modes. Rate limits, slow responses and temporary server errors then surface straight in the product.",
-            "AI Gateway is where I'm working through those problems in a small, testable service: one interface for the application, provider-specific behaviour behind it, and predictable HTTP responses when something goes wrong.",
+            "When an application calls an LLM API directly, it becomes tied to one vendor's SDK, error format and failure modes. Rate limits, slow responses and temporary server errors surface straight in the product, and a model asked about your documents will happily answer from general knowledge instead.",
+            "AI Gateway puts one stable API in front of the model provider. It handles retries, timeouts and error mapping, and grounds answers in stored documents, refusing when it has nothing relevant to go on.",
         ],
-        role: "Sole developer. I designed the provider interface, built the Gemini and mock providers, the error-handling layer and the tests, and prototyped retrieval.",
+        role: "Sole developer. I designed the provider interface and the retrieval pipeline, built the Gemini and mock providers, the error handling and the test suite.",
         highlights: [
             {
+                title: "Retrieval-augmented Q&A",
+                body: "POST /documents splits text into overlapping chunks, embeds them and stores them. POST /ask embeds the question, ranks stored chunks by cosine similarity, and sends the top matches, numbered [1], [2] and so on, to the model with instructions to answer only from them and cite their numbers. The response lists each source with its similarity score.",
+            },
+            {
+                title: "A grounding guardrail",
+                body: "Chunks below a similarity threshold are dropped. If none remain, the API answers \"not found\" without calling the model at all, so it never answers from general knowledge and never pays for a call it can't ground.",
+            },
+            {
                 title: "Provider-agnostic interface",
-                body: "An abstract AIProvider defines one async chat() method. A Gemini provider implements it with the google-genai SDK, and a deterministic mock provider implements it for tests. The route depends on an AIService, never on a vendor.",
+                body: "Chat and embeddings sit behind one AIProvider interface. Gemini is implemented; a mock provider implements the full interface, including embeddings based on word overlap, so the API runs with no API key.",
             },
             {
                 title: "Resilient provider calls",
-                body: "Every request has a timeout. Responses with status 429, 500 or 503 are retried with exponential backoff and random jitter, up to a configurable limit. Other errors fail immediately.",
+                body: "Every chat and embedding call shares one wrapper: a per-request timeout, and retries with exponential backoff and jitter on 429, 500 and 503. Client errors such as 400 fail immediately.",
             },
             {
                 title: "Typed errors, predictable responses",
-                body: "Failures become a small error hierarchy (timeout, unavailable, rate limited). A FastAPI exception handler maps these to 504, 503 and 429 (with a Retry-After header). Anything unexpected becomes a 502.",
+                body: "Provider failures map to HTTP statuses: timeout 504, unavailable 503, rate limited 429 with a Retry-After header, anything else 502. Every response reports the model, token usage and latency.",
             },
             {
-                title: "Usage and latency on every response",
-                body: "Each reply includes the model used, input and output token counts, and the latency measured around the provider call.",
-            },
-            {
-                title: "Retrieval prototype",
-                body: "Overlapping text chunking, Gemini embeddings and cosine-similarity top-k search. It's a standalone prototype and isn't exposed through the API yet.",
+                title: "Tested and containerised",
+                body: "44 pytest tests cover the API, retrieval, retries, error mapping and configuration, with no network calls. A Dockerfile runs the service as a non-root user.",
             },
         ],
         decisions: [
             {
-                title: "Interface first, vendor second",
-                body: "The service layer knows nothing about Gemini. Adding a provider means implementing a single method, and the HTTP layer stays the same.",
+                title: "Refuse rather than guess",
+                body: "Below the similarity threshold the model is never called. That avoids confident answers the stored documents don't support.",
             },
             {
-                title: "Retry only what is retryable",
-                body: "Client errors fail fast. Only rate limits and temporary server errors are retried, and jitter keeps retries from all arriving at the same moment.",
+                title: "Retry only what can succeed on retry",
+                body: "Rate limits and 500/503 errors are often transient, so they're retried. A 400 fails the same way every time, so retrying it only adds latency. Jitter stops clients that failed together from retrying together.",
             },
             {
-                title: "Deterministic tests without network calls",
-                body: "The mock provider lets the API be tested without API keys or network access. Tests use pytest, pytest-asyncio and FastAPI's test client.",
+                title: "A mock provider, not just mocked tests",
+                body: "Because the mock implements real (if simple) embeddings, retrieval tests check actual ranking behaviour rather than hard-coded results.",
+            },
+            {
+                title: "A vector store behind a small interface",
+                body: "Today's store is in memory and searched by brute force, which is fine for a demo. It exposes three methods, so a database such as pgvector can replace it without touching the service.",
             },
         ],
-        stack: ["Python", "FastAPI", "Pydantic", "google-genai (Gemini)", "pytest"],
-        links: [{ label: "Repository", href: "https://github.com/IsraelChidera/AI-Gateway-API" }],
+        stack: ["Python", "FastAPI", "Pydantic", "Google Gemini API", "pytest", "Docker"],
+        // Add { label: "Live API docs", href: "…" } once the service is deployed.
+        links: [{ label: "GitHub", href: "https://github.com/IsraelChidera/AI-Gateway-API" }],
         visual: { type: "diagram", name: "gateway" },
+    },
+    {
+        slug: "enterprise-payroll-platform",
+        title: NEPTUNE_NAME_APPROVED
+            ? "Neptune Payroll Platform"
+            : "An internal payroll platform at a Big Four professional services firm",
+        kind: NEPTUNE_NAME_APPROVED ? "Deloitte & Touche" : "Enterprise",
+        status: "internal",
+        statusLabel: "Internal · in production",
+        featured: true,
+        summary:
+            "An internal payroll platform for the Tax & GES department. I built AI document extraction with Azure Document Intelligence that reads payroll documents and cut manual data entry by 60%. I also lead development of the web application and maintain it in production; the platform reduced payroll processing time by 35%.",
+        note: "Internal tool: no public link or screenshots. This case study stays high level, with no internal architecture or client data.",
+        problem: [
+            "Payroll processing involved manual steps, including re-keying data from payroll documents by hand. That takes time and leaves room for error in work where accuracy matters.",
+        ],
+        role: "I built the AI document extraction, and I lead development of the web application, from application architecture to backend API integration, and maintain it in production.",
+        highlights: [
+            {
+                title: "AI document extraction",
+                body: "Payroll documents are read by Azure Document Intelligence, and the extracted data appears in the application, replacing manual data entry.",
+            },
+            {
+                title: "Backend integration",
+                body: "The Next.js application integrates with Node.js/Express and ASP.NET APIs. I work with backend engineers on API contracts, data flow and error handling.",
+            },
+            {
+                title: "Performance",
+                body: "Improved load performance by 25% (Largest Contentful Paint) through server-side rendering, caching, code splitting and lazy loading.",
+            },
+            {
+                title: "Accessibility",
+                body: "Led accessibility improvements to bring key interfaces in line with WCAG 2.1 guidelines.",
+            },
+        ],
+        decisions: [
+            {
+                title: "Automate the slowest manual step",
+                body: "Extracting data from documents automatically, instead of re-keying it, removed most of the manual entry from the workflow.",
+            },
+        ],
+        outcomes: [
+            { value: "60%", label: "less manual data entry with the AI document extraction I built" },
+            { value: "35%", label: "reduction in payroll processing time (platform outcome)" },
+            { value: "25%", label: "faster Largest Contentful Paint" },
+        ],
+        stack: ["Azure Document Intelligence", "Next.js", "TypeScript", "Node.js/Express and ASP.NET APIs"],
+        links: [],
+        visual: { type: "diagram", name: "payroll" },
     },
     {
         slug: "werunam",
@@ -84,17 +149,18 @@ export const projects: Project[] = [
         kind: "Founder & engineer",
         status: "live",
         statusLabel: "Live",
+        featured: true,
         summary:
-            "An errands, market-sourcing and logistics service in Lagos. I founded it and built the web platform around one rule: customers see exactly what they're paying for before they pay.",
+            "I founded and built WeRunAm, a Lagos platform for market runs, errands, airport item recovery, and import and export shipments. Customers get an itemised quote before paying, then photo and video updates before dispatch, with a defined dispute and refund process, so customers can trust someone else to shop for them.",
         problem: [
             "Getting something bought, collected or moved in Lagos often means handing money to someone and hoping it works out. Prices are unclear, updates are rare, and there's little recourse when something goes wrong.",
-            "WeRunAm handles market runs, errands, airport item recovery and larger import and export shipments. The product's job is to make that trustworthy for customers who aren't there to watch it happen.",
+            "WeRunAm's job is to make that trustworthy for customers who aren't there to watch it happen.",
         ],
         role: "Founder and engineer. I designed the customer flows and built the web platform.",
         highlights: [
             {
                 title: "A request flow for each service",
-                body: "Market runs, errands, airport rescue, and import and export shipments each have their own request flow that asks for the details that service needs.",
+                body: "Market runs, errands, airport item recovery, and import and export shipments each have their own request flow that asks for the details that service needs.",
             },
             {
                 title: "Quote, then pay",
@@ -129,50 +195,60 @@ export const projects: Project[] = [
         },
     },
     {
-        slug: "enterprise-payroll-platform",
-        title: "Enterprise payroll platform",
-        kind: "Enterprise · Deloitte & Touche",
-        status: "internal",
-        statusLabel: "Internal · in production",
+        slug: "intercity-booking-platform",
+        title: "Intercity booking platform",
+        kind: "T40 Technologies",
+        status: "shipped",
+        statusLabel: "Shipped 2024",
+        featured: true,
         summary:
-            "An internal payroll platform for Deloitte's Tax & GES department. I lead development of the web application and built its OCR document automation.",
-        note: "This is internal software, so this case study stays high level: no screenshots, code, client information or system details.",
+            "A reusable booking website template for intercity transport operators, with online ticket purchase, real-time seat availability and schedule management. It is used by two operators and was associated with a 40% increase in booking conversions. I also built the charter booking feature on my own.",
         problem: [
-            "Payroll processing involved manual steps, including re-keying data from payroll documents by hand. That takes time and leaves room for error in work where accuracy matters.",
+            "Intercity transport operators in Nigeria needed to sell tickets online, with seat availability customers could rely on.",
+            "T40's approach was one booking product that could be branded and deployed for each operator, rather than a separate site per operator.",
         ],
-        role: "I lead development of the web application, from application architecture to backend API integration, and maintain it in production. I work with backend engineers on API contracts, data flow and error handling.",
+        role: "Software engineer at T40 Technologies. I built the white-label booking template, integrated payments with the Laravel backend, and built Intercity NG's charter booking feature on my own.",
         highlights: [
             {
-                title: "OCR document intake",
-                body: "Payroll documents are processed with Azure Document Intelligence, and the extracted data appears in the application, replacing manual data entry.",
+                title: "White-label booking template",
+                body: "One Next.js booking website, reused across operators, with online ticket purchase and schedule management.",
             },
             {
-                title: "Backend integration",
-                body: "The Next.js application integrates with Node.js/Express and ASP.NET APIs.",
+                title: "Real-time seat availability",
+                body: "React Query and WebSockets keep seat availability and booking data current without manual refreshes.",
             },
             {
-                title: "Performance",
-                body: "Improved load performance by 25% (Largest Contentful Paint) through server-side rendering, caching, code splitting and lazy loading.",
+                title: "Online checkout",
+                body: "Paystack and Monnify payment APIs integrated with a Laravel backend for ticket checkout.",
             },
             {
-                title: "Accessibility",
-                body: "Led accessibility improvements to bring key interfaces in line with WCAG 2.1 guidelines.",
+                title: "Charter booking",
+                body: "Built single-handedly for Intercity NG: customers request and book chartered vehicles online.",
             },
         ],
         decisions: [
             {
-                title: "Automate the slowest manual step",
-                body: "Pulling data from documents automatically, instead of re-keying it, removed most of the manual entry from the workflow.",
+                title: "One template, many operators",
+                body: "A single codebase serves every operator, so fixes and features reach all of them at once.",
+            },
+            {
+                title: "Push seat changes instead of polling",
+                body: "WebSockets update seat availability as it changes, which matters when several customers are booking the same departure.",
             },
         ],
         outcomes: [
-            { value: "35%", label: "reduction in payroll processing time (platform outcome)" },
-            { value: "60%", label: "less manual data entry with the OCR automation I built" },
-            { value: "25%", label: "faster Largest Contentful Paint" },
+            { value: "2", label: "transport operators using the template" },
+            { value: "40%", label: "increase in booking conversions (associated)" },
         ],
-        stack: ["Next.js", "TypeScript", "Azure Document Intelligence", "Node.js/Express APIs", "ASP.NET APIs"],
-        links: [],
-        visual: { type: "diagram", name: "payroll" },
+        stack: ["Next.js", "React Query", "WebSockets", "Paystack", "Monnify", "Laravel APIs"],
+        links: [{ label: "intercity.ng", href: "https://intercity.ng/" }],
+        visual: {
+            type: "image",
+            src: "/projects/t40-template.webp",
+            alt: "The white-label booking template on desktop and mobile, with a ticket search form for travel between Nigerian cities",
+            width: 529,
+            height: 431,
+        },
     },
     {
         slug: "mymoney",
@@ -180,6 +256,7 @@ export const projects: Project[] = [
         kind: "Personal project",
         status: "live",
         statusLabel: "Live",
+        featured: false,
         summary:
             "A personal finance tracker that brings savings, investments and goals spread across different platforms into one dashboard.",
         problem: [
@@ -188,22 +265,13 @@ export const projects: Project[] = [
         ],
         role: "I designed and built the application end to end.",
         highlights: [
-            {
-                title: "Dashboard",
-                body: "Net worth overview, allocation chart, contribution history and recent activity.",
-            },
+            { title: "Dashboard", body: "Net worth overview, allocation chart, contribution history and recent activity." },
             {
                 title: "Savings and investments",
                 body: "Create, edit and delete savings accounts and investments (stocks, ETFs, bonds and crypto) across platforms.",
             },
-            {
-                title: "Goals and reports",
-                body: "Financial targets with progress tracking and deadline countdowns, plus monthly reports with charts.",
-            },
-            {
-                title: "Accounts",
-                body: "Email and Google sign-in with Firebase Authentication. Forms are validated with Zod and react-hook-form.",
-            },
+            { title: "Goals and reports", body: "Financial targets with progress tracking and deadline countdowns, plus monthly reports with charts." },
+            { title: "Accounts", body: "Email and Google sign-in with Firebase Authentication. Forms are validated with Zod and react-hook-form." },
         ],
         decisions: [
             {
@@ -233,6 +301,7 @@ export const projects: Project[] = [
         kind: "Personal project",
         status: "live",
         statusLabel: "Live",
+        featured: false,
         summary:
             "A free PAYE estimator for Nigeria's 2026 tax rules, with a plain-language explainer and an AI assistant for common questions.",
         problem: [
@@ -249,10 +318,7 @@ export const projects: Project[] = [
                 title: "Deductions and reliefs",
                 body: "National Housing Fund, health insurance, life assurance and rent relief (20% of annual rent, capped at ₦500,000).",
             },
-            {
-                title: "What changed in 2026",
-                body: "A short explainer covering the main changes to personal income tax under the new law.",
-            },
+            { title: "What changed in 2026", body: "A short explainer covering the main changes to personal income tax under the new law." },
             {
                 title: "AI assistant",
                 body: "Answers common questions about the new law. Its answers are labelled as informational, not legal or tax advice.",
@@ -279,18 +345,29 @@ export const projects: Project[] = [
     },
 ];
 
-export const moreWork = [
+// Homepage order alternates enterprise/product work and AI work.
+const featuredOrder = ["enterprise-payroll-platform", "ai-gateway-api", "werunam", "intercity-booking-platform"];
+export const featuredProjects = featuredOrder.map((slug) => projects.find((project) => project.slug === slug)!);
+
+// Smaller personal and open-source projects. Entries with a slug have a case study.
+export const sideProjects = [
     {
-        title: "White-label booking template",
-        context: "T40 Technologies",
-        body: "A reusable booking website for intercity transport operators, with online tickets, real-time seat availability and Paystack and Monnify checkout. Adopted by two operators.",
-        href: undefined as string | undefined,
+        title: "doc-analyzer",
+        context: "AI · Open source",
+        body: "A FastAPI service that runs uploaded documents through Gemini to analyse, summarise, extract, explain, classify or evaluate them, and says when the file doesn't contain an answer.",
+        href: "https://github.com/IsraelChidera/doc-analyzer",
     },
     {
-        title: "Intercity NG",
-        context: "T40 Technologies",
-        body: "A consumer web app for booking interstate bus tickets, including the charter booking feature I built single-handedly.",
-        href: "https://intercity.ng/",
+        title: "MyMoney",
+        context: "Personal finance tracker",
+        body: "Savings, investments and goals across platforms in one dashboard. Next.js, Firebase and Zustand.",
+        href: "/projects/mymoney/",
+    },
+    {
+        title: "NaijaTax 2026",
+        context: "PAYE estimator",
+        body: "Nigeria's 2026 tax rules in a client-side calculator, with an AI assistant for common questions.",
+        href: "/projects/naijatax/",
     },
     {
         title: "DevBlog",
@@ -304,4 +381,23 @@ export const moreWork = [
         body: "A productivity app built with React and Firebase Authentication.",
         href: "https://github.com/IsraelChidera/focus-app",
     },
+];
+
+// Client websites. Kept further down the page: they read as agency work.
+export const otherWork: { title: string; body: string; href?: string }[] = [
+    {
+        title: "KSOM UK",
+        body: "Training and Bible education institution of Eternity Network International (ENI)",
+        href: "https://koinoniaschoolofministry.org.uk/",
+    },
+    // rdjestates.com wasn't responding on 22 Oct 2026; add the link back once it's up.
+    { title: "RDJ Estates", body: "Landing page for RDJ Estates: Find Your Sustainable Dream Home" },
+    {
+        title: "Graft",
+        body: "Landing page for an AI-powered text generator for customised, industry-specific and multilingual content",
+        href: "https://graft.live/",
+    },
+    { title: "Good Homes", body: "A web platform to sell and rent properties without commissions", href: "https://good-homes.vercel.app/" },
+    { title: "Pharmabolt", body: "Medication delivery and appointment booking with professionals", href: "https://pharmaboltapp.vercel.app/" },
+    { title: "Lumixus Studio", body: "Website for a web-design agency", href: "https://lumixus-studio.com" },
 ];
