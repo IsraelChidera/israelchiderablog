@@ -251,48 +251,115 @@ export const projects: Project[] = [
         },
     },
     {
-        slug: "mymoney",
-        title: "MyMoney",
+        slug: "envelo",
+        title: "Envelo",
         kind: "Personal project",
         status: "live",
         statusLabel: "Live",
         featured: false,
         summary:
-            "A personal finance tracker that brings savings, investments and goals spread across different platforms into one dashboard.",
+            "An AI envelope-budgeting app. Describe your month in plain words and it builds your envelope budget; before you buy something, Spend Check tells you whether your budget can take it.",
         problem: [
-            "Savings and investments often sit across several apps and platforms, so there's no single view of net worth or of progress toward a goal.",
-            "MyMoney gives people one place to record them and see the whole picture. Entries are added manually; it doesn't connect to bank accounts.",
+            "Budgets usually fail at the moment of spending: by the time a banking app shows the damage, the money is gone. Setting up a proper budget is also tedious enough that many people never start.",
+            "Envelo turns a plain-language description of someone's month into an envelope budget, then answers \"can I afford this?\" before a purchase rather than after it. There's no bank linking; users describe their money themselves.",
         ],
-        role: "I designed and built the application end to end.",
+        role: "I designed and built the app end to end, including the AI endpoint.",
         highlights: [
-            { title: "Dashboard", body: "Net worth overview, allocation chart, contribution history and recent activity." },
             {
-                title: "Savings and investments",
-                body: "Create, edit and delete savings accounts and investments (stocks, ETFs, bonds and crypto) across platforms.",
+                title: "AI Plan Builder",
+                body: "Type something like \"I earn ₦450k, rent is ₦150k, saving for December\" and Envelo returns envelopes with amounts and kinds (essential, flexible, savings or debt), flags shortfalls, and opens the plan in an editor so you can change anything before saving.",
             },
-            { title: "Goals and reports", body: "Financial targets with progress tracking and deadline countdowns, plus monthly reports with charts." },
-            { title: "Accounts", body: "Email and Google sign-in with Firebase Authentication. Forms are validated with Zod and react-hook-form." },
+            {
+                title: "Spend Check",
+                body: "Ask \"Can I afford a ₦40,000 dinner?\" and get a yes, careful, no or unclear verdict, the envelope it should come from, reasoning that uses the budget's own numbers, and a suggestion.",
+            },
+            {
+                title: "The Gemini key never reaches the browser",
+                body: "AI requests go to a Netlify Function. It verifies the user's Firebase ID token against Google's public keys with jose before calling Gemini, so only signed-in users can use the AI and the key stays server-side.",
+            },
+            {
+                title: "Budgets and accounts",
+                body: "Firebase Authentication and Firestore, with a rich-text editor, search, sorting, a dashboard, light and dark themes and a mobile layout.",
+            },
         ],
         decisions: [
             {
-                title: "Security lives in the data layer",
-                body: "Next.js middleware redirects signed-out users as a convenience, but Firestore security rules are what stop anyone reading or writing data they don't own.",
+                title: "Constrain the model, then check its output",
+                body: "Gemini returns JSON that must match a schema, and the server still cleans and clamps every field (amounts, envelope kinds, currency codes, lengths) before anything reaches the app.",
             },
             {
-                title: "A service per domain",
-                body: "Savings, investments, goals and activity each have their own Firestore service, so data access stays out of the UI components. A Zustand store holds client state.",
+                title: "Treat user text as data",
+                body: "Both prompts tell the model to treat the user's description and budget only as data, never as instructions, and requests are length-limited on the server.",
+            },
+            {
+                title: "Honest answers over confident ones",
+                body: "Spend Check can answer \"unclear\" when the numbers aren't there, and says when it matters that it can't see what's already been spent this month.",
+            },
+            {
+                title: "Resilient AI calls",
+                body: "Each request has a deadline, retries respect Google's retry-delay hints, and an optional fallback model takes over when the primary one is overloaded.",
             },
         ],
-        stack: ["Next.js 14", "TypeScript", "Firebase Auth", "Cloud Firestore", "Zustand", "Recharts", "Zod", "Tailwind CSS"],
+        stack: ["React 18", "Vite", "Redux Toolkit", "Tailwind CSS", "Firebase Auth", "Cloud Firestore", "Google Gemini API", "Netlify Functions", "jose"],
         links: [
-            { label: "Live app", href: "https://track-the-money.netlify.app/" },
-            { label: "Repository", href: "https://github.com/IsraelChidera/Money-tracker-app" },
+            { label: "Live app", href: "https://envelo-budget.netlify.app/" },
+            { label: "GitHub", href: "https://github.com/IsraelChidera/envelo" },
         ],
         visual: {
             type: "screenshot",
-            name: "mymoney",
-            alt: "MyMoney landing page: 'See your entire financial life in one place'",
-            url: "track-the-money.netlify.app",
+            name: "envelo",
+            alt: "Envelo homepage: 'Know before you spend', with a sample November budget and a Spend Check answer",
+            url: "envelo-budget.netlify.app",
+        },
+    },
+    {
+        slug: "pagelens",
+        title: "PageLens",
+        kind: "Personal project",
+        status: "live",
+        statusLabel: "Live",
+        featured: false,
+        summary:
+            "A free AI website-audit tool. Enter a URL and Gemini returns a scored report across UX, SEO, accessibility, performance and content, with fixes ranked by priority.",
+        problem: [
+            "Small business owners and freelancers often know their website could be better but not where to start, and full audits are expensive or written for developers.",
+            "PageLens gives a quick first read in plain English, with no sign-up: an overall score, category scores and a prioritised list of fixes.",
+        ],
+        role: "I designed and built the application.",
+        highlights: [
+            {
+                title: "Structured AI reports",
+                body: "Gemini returns JSON that must match a response schema: a summary, an overall score, five category scores with verdicts, strengths, and 6–10 recommendations, each with a category and priority.",
+            },
+            {
+                title: "Prioritised fixes",
+                body: "Recommendations are sorted high, medium, low so the most important change comes first, and written for site owners rather than developers.",
+            },
+            {
+                title: "Share and export",
+                body: "Every audit has its own URL, reports can be copied as Markdown, and a branded PDF can be downloaded, generated with react-pdf.",
+            },
+        ],
+        decisions: [
+            {
+                title: "Schema-constrained output",
+                body: "Asking for JSON against a fixed schema, then clamping scores to 0–100, means the report UI never has to guess at the model's format.",
+            },
+            {
+                title: "A model fallback chain",
+                body: "If a model is overloaded, rate-limited or retired, the request moves to the next model in a list of aliases instead of failing.",
+            },
+        ],
+        stack: ["Next.js 15", "React 19", "TypeScript", "Tailwind CSS 4", "Google Gemini API", "react-pdf"],
+        links: [
+            { label: "Live app", href: "https://pagelens.netlify.app/" },
+            { label: "GitHub", href: "https://github.com/IsraelChidera/PageLens" },
+        ],
+        visual: {
+            type: "screenshot",
+            name: "pagelens",
+            alt: "PageLens homepage: 'Get a free audit of your website in seconds', with a URL field and a sample score report",
+            url: "pagelens.netlify.app",
         },
     },
     {
@@ -358,10 +425,16 @@ export const sideProjects = [
         href: "https://github.com/IsraelChidera/doc-analyzer",
     },
     {
-        title: "MyMoney",
-        context: "Personal finance tracker",
-        body: "Savings, investments and goals across platforms in one dashboard. Next.js, Firebase and Zustand.",
-        href: "/projects/mymoney/",
+        title: "Envelo",
+        context: "AI budgeting app",
+        body: "Describe your month in plain words and it builds an envelope budget; Spend Check tells you if a purchase fits before you buy.",
+        href: "/projects/envelo/",
+    },
+    {
+        title: "PageLens",
+        context: "AI website audits",
+        body: "Enter a URL and get a scored report on UX, SEO, accessibility, performance and content, with fixes ranked by priority.",
+        href: "/projects/pagelens/",
     },
     {
         title: "NaijaTax 2026",
@@ -374,12 +447,6 @@ export const sideProjects = [
         context: "Open source",
         body: "A blog platform for developers, built with Astro, React and Tailwind CSS.",
         href: "https://github.com/IsraelChidera/DevBlog",
-    },
-    {
-        title: "Focus app",
-        context: "Open source",
-        body: "A productivity app built with React and Firebase Authentication.",
-        href: "https://github.com/IsraelChidera/focus-app",
     },
 ];
 
